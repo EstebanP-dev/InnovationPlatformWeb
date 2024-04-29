@@ -1,0 +1,15 @@
+﻿<aside class="h-screen">
+    <nav class="h-full flex flex-col bg-white border-r shadow-sm">
+        <div class="p-4 pb-2 flex justify-between items-center">
+            <span class="mdi mdi-lightbulb text-2xl text-blue-600 font-black hidden md:block"></span>
+            <span class="font-bold text-black hidden md:block">Módulo de Proyectos</span>
+            <button class="rounded bg-gray-50 hover:bg-gray-100">
+                <span class="mdi mdi-logout text-2xl text-center"></span>
+            </button>
+        </div>
+        <ul class="flex-1 px-3">
+            @Children
+        </ul>
+        <SidebarProfileComponent />
+    </nav>
+</aside>

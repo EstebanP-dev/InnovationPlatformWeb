@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>$(NetVersion)</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\Common.Presentation\Common.Presentation.csproj" />
+      <ProjectReference Include="..\Modules.Projects.Application\Modules.Projects.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Projects\All\List\ProjectListComponent.razor" />
+      <AdditionalFiles Include="Projects\All\List\Table\ProjectsTableComponent.razor" />
+      <AdditionalFiles Include="Projects\All\List\Table\StatusBadge.razor" />
+      <AdditionalFiles Include="Projects\All\List\Table\TypeBadge.razor" />
+      <AdditionalFiles Include="Projects\All\List\_Imports.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Projects\ProjectsTable\ProjectsTable.razor" />
+    </ItemGroup>
+
+</Project>

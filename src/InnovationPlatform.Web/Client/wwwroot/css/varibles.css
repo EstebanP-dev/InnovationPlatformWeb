@@ -1,0 +1,10 @@
+﻿src/Shell/:root {
+    --innovation-bg-alert: #2c2f3b;
+    --innovation-bg-alert-icon: var(--innovation-bg-alert);
+    --innovation-bg-alert-body: var(--innovation-bg-alert);
+    --innovation-text-color-alert-default: #0090e7;
+    --innovation-text-color-alert-info: #8f5fe8;
+    --innovation-text-color-alert-success: #00d25b;
+    --innovation-text-color-alert-warning: #ffab00;
+    --innovation-text-color-alert-error: #fc424a;
+}

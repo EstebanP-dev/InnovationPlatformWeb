@@ -1,0 +1,25 @@
+﻿<div class="w-full flex flex-col gap-1">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label htmlFor="@Name" class="text-slate-800">
+            @Label
+        </label>
+    }
+    <div>
+        <InputText
+            type="@Type"
+            name="@Name"
+            placeholder="@Placeholder"
+            ref="@Reference"
+            @bind-Value="@Value"
+            DisplayName="@Name"
+            aria-invalid="@(!string.IsNullOrWhiteSpace(Error) ? "true" : "false")"
+            class="@CssClass"
+            required="@Required"
+        />
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Error))
+    {
+        <span class="text-xs text-[#f64949fe] mt-0.5">@Error</span>
+    }
+</div>

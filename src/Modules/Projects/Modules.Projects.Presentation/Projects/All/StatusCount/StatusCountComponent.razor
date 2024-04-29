@@ -1,0 +1,12 @@
+﻿<div class="h-full py-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+        @foreach (var stat in _getTotalStatusCountByUserCollection)
+        {
+            <Card Title="@stat.Enumeration?.Name"
+                  Icon="@stat.Enumeration?.Icon"
+                  CreatedAt="@stat.LastCreated"
+                  Count="@stat.Value"
+                  IconBackground="bg-blue-700"/>
+        }
+    </div>
+</div>

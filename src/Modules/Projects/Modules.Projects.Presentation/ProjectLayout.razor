@@ -1,0 +1,32 @@
+﻿@using Microsoft.JSInterop
+@using Modules.Projects.Presentation.Scenes
+@inherits LayoutComponentBase
+@inject IJSRuntime Js
+
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+
+<div class="w-full h-screen flex flex-row">
+    <Sidebar>
+        <Children>
+            <SidebarItem Icon="book-lock" Text="All" Route="projects" />
+            <SidebarItem Icon="book-lock" Text="Create" Route="projects/create" />
+        </Children>
+    </Sidebar>
+    <div class="flex-1 overflow-y-auto">
+        <div class="p-4 2xl:px-10 ">
+            @Body
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool isFirstRender) {
+        if (isFirstRender)
+        {
+            await Js.InvokeVoidAsync("window.initializeFlowbite");
+        }
+    }
+}

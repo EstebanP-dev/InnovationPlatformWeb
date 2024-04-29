@@ -1,0 +1,20 @@
+﻿<PageTitle>Innovation | @Title</PageTitle>
+
+<div class="flex items-center justify-between mb-4">
+    @if (ShowBackButton)
+    {
+        <Button Icon="arrow-left-circle" CssClass="text-3xl text-blue-700"></Button>
+    }
+
+    <h2 class="@CssClassString">
+        @Title
+    </h2>
+
+    @if (ShowTileButton)
+    {
+        <Button OnClick="@TailButtonOnClickHandler"
+                Icon="@TailButtonIcon"
+                Label="@TailButtonTitle"
+                CssClass="flex flex-row-reverse gap-1 items-center bg-blue-600 text-white rounded-md py-2 2xl:py-2.5"></Button>
+    }
+</div>

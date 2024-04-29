@@ -1,0 +1,84 @@
+﻿<TableComponent OnSearchTextChanged="Data.FilteredFromText">
+    <TableHeaders>
+        <TableHeader Title="Title"/>
+        <TableHeader Title="Description"/>
+        <TableHeader Title="Status"/>
+        <TableHeader Title="Type"/>
+        <TableHeader Title="Assesor"/>
+        <TableHeader Title="Authors"/>
+        <TableHeader Title="Created At" ShowOnMobile="false"/>
+    </TableHeaders>
+    <TableBody>
+        @if (!Data.Any())
+        {
+            <TableRow>
+                <div class="flex items-center">
+                    <p class="text-base text-black">No hay información.</p>
+                </div>
+            </TableRow>
+        }
+        else
+        {
+            @foreach (var item in Data)
+            {
+                <TableRow>
+                    <ChildContent>
+                        <TableCell Remarkable="true">
+                            <div class="flex items-center">
+                                <p class="text-base text-black">@item.Title</p>
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <div class="flex items-center">
+                                <p class="text-base text-black">@item.Description</p>
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <StatusBadge Status="item.Status" />
+                        </TableCell>
+                        <TableCell>
+                            <TypeBadge Type="item.Type" />
+                        </TableCell>
+                        <TableCell>
+                            <div class="flex">
+                                <div
+                                    class="w-7 h-7 rounded-full text-white flex items-center justify-center text-sm mr-1 bg-yellow-600">
+                                    <div class="px-4">
+                                        <div class="group inline-flex items-center outline-none">
+                                            <span>JN</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <div class="flex">
+                                <div
+                                    class="w-7 h-7 rounded-full text-white flex items-center justify-center text-sm mr-1 bg-yellow-600">
+                                    <div class="px-4">
+                                        <div class="group inline-flex items-center outline-none">
+                                            <span>JN</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="w-7 h-7 rounded-full text-white flex items-center justify-center text-sm mr-1 bg-yellow-600">
+                                    <div class="px-4">
+                                        <div class="group inline-flex items-center outline-none">
+                                            <span>EP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </TableCell>
+                        <TableCell ShowOnMobile="false">
+                            <span class="text-base text-gray-600">
+                                Hace 2 días
+                            </span>
+                        </TableCell>
+                    </ChildContent>
+                </TableRow>
+            }
+        }
+    </TableBody>
+</TableComponent>
