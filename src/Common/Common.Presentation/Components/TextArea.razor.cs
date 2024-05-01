@@ -1,11 +1,7 @@
 ﻿namespace Common.Presentation.Components;
 
-public sealed partial class SelectBox<TValue>
-    where TValue : notnull
+public sealed partial class TextArea
 {
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
-    
     [Parameter]
     public string? Label { get; set; }
 
@@ -19,10 +15,10 @@ public sealed partial class SelectBox<TValue>
     public bool Required { get; set; }
 
     [Parameter]
-    public TValue? Value { get; set; }
+    public string? Value { get; set; }
 
     [Parameter]
-    public EventCallback<TValue?> ValueChanged { get; set; }
+    public EventCallback<string?> ValueChanged { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {

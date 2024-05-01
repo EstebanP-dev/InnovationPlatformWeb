@@ -1,0 +1,48 @@
+﻿<MudDialog>
+    <DialogContent>
+        <div class="d-flex flex-column py-1">
+            @if (MaximumValuesHasBeenPicked)
+            {
+                <p class="text-black dark:text-white text-lg">Se ha seleccionado el máximo de información.</p>
+            }
+            else
+            {
+                @if (Data.Any())
+                {
+                    @foreach (var item in Data)
+                    {
+                        <MudButton OnClick="_ => OnSelectMember(item)">@item.Name</MudButton>
+                    }
+                }
+                else
+                {
+                    <p class="text-black dark:text-white text-lg">No se ha encontrado información.</p>
+                }
+            }
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <button class="bg-blue-600 text-white p-2 rounded" @onclick="OnCancel">Cerrar</button>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance? MudDialog { get; init; }
+
+    [Parameter]
+    public IEnumerable<ProjectMemberViewModel> Data { get; set; } = [];
+
+    [Parameter]
+    public bool MaximumValuesHasBeenPicked { get; set; }
+
+    private void OnCancel()
+    {
+        MudDialog?.Cancel();
+    }
+
+    private void OnSelectMember(ProjectMemberViewModel member)
+    {
+        MudDialog?.Close(DialogResult.Ok(member));
+    }
+}

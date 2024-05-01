@@ -1,12 +1,10 @@
-﻿@using Microsoft.JSInterop
-@using Modules.Projects.Presentation.Scenes
+﻿@using Modules.Projects.Presentation.Scenes
+@using MudBlazor
 @inherits LayoutComponentBase
-@inject IJSRuntime Js
 
-<FluentToastProvider />
-<FluentDialogProvider />
-<FluentTooltipProvider />
-<FluentMessageBarProvider />
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <div class="w-full h-screen flex flex-row">
     <Sidebar>
@@ -21,12 +19,3 @@
         </div>
     </div>
 </div>
-
-@code {
-    protected override async Task OnAfterRenderAsync(bool isFirstRender) {
-        if (isFirstRender)
-        {
-            await Js.InvokeVoidAsync("window.initializeFlowbite");
-        }
-    }
-}

@@ -26,4 +26,8 @@
     <EmbeddedResource Include="appsettings.Development.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
 </Project>

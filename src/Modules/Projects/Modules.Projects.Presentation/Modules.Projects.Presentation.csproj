@@ -30,10 +30,12 @@
       <AdditionalFiles Include="Projects\All\List\Table\StatusBadge.razor" />
       <AdditionalFiles Include="Projects\All\List\Table\TypeBadge.razor" />
       <AdditionalFiles Include="Projects\All\List\_Imports.razor" />
+      <AdditionalFiles Include="Projects\Form\Create\Index.razor" />
     </ItemGroup>
 
     <ItemGroup>
       <UpToDateCheckInput Remove="Projects\ProjectsTable\ProjectsTable.razor" />
+      <UpToDateCheckInput Remove="Projects\Create\Index.razor" />
     </ItemGroup>
 
 </Project>

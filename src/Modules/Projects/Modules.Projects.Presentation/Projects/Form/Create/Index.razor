@@ -1,0 +1,16 @@
+﻿@layout ProjectLayout
+@page "/projects/create"
+
+<div class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
+    <!-- Right Content -->
+    <div class="col-span-1 xl:col-auto">
+        <MembersInformation Title="Asesores" AddButtonTitle="Agregar un asesor" MaximumMembers="1" />
+        <MembersInformation Title="Autores" AddButtonTitle="Agregar un author" MaximumMembers="2" />
+    </div>
+    <div class="col-span-2">
+        <GeneralInformationComponent />
+    </div>
+    <div class="col-span-3">
+        <DeliverablesInformation />
+    </div>
+</div>

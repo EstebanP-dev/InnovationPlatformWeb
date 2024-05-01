@@ -2,8 +2,8 @@
 
 namespace Common.Presentation.Mvvm;
 
-public abstract class ExtendedObservableCollection<T>
-    : ObservableCollection<T>
+public abstract class ExtendedObservableCollection<T>()
+    : ObservableCollection<T>()
 {
     public virtual void AddRange(IEnumerable<T>? collection)
     {

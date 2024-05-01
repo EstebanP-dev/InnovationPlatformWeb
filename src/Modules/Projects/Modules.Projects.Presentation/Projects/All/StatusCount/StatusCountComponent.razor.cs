@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Microsoft.FluentUI.AspNetCore.Components;
-using Modules.Projects.Application.GetTotalStatusCountByUser;
+﻿using Modules.Projects.Application.GetTotalStatusCountByUser;
 
 namespace Modules.Projects.Presentation.Projects.All.StatusCount;
 
@@ -10,9 +8,6 @@ public sealed partial class StatusCountComponent
 
     [Inject]
     public ISender? Sender { get; init; }
-
-    [Inject]
-    public IToastService? ToastService { get; init; }
 
     protected override async Task OnInitializedAsync()
     {

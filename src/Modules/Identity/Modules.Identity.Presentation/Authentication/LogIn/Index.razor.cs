@@ -1,4 +1,5 @@
 ﻿using Modules.Identity.Application.Authentication.LogIn;
+using MudBlazor;
 
 namespace Modules.Identity.Presentation.Authentication.LogIn;
 
@@ -13,13 +14,13 @@ public sealed partial class Index
     private ISender? Sender { get; init; }
 
     [Inject]
-    private IToastService? ToastService { get; init; }
+    private ISnackbar? Snackbar { get; init; }
 
     private async Task OnValidSubmitAsync(EditContext context)
     {
         ArgumentNullException.ThrowIfNull(NavigationManager);
         ArgumentNullException.ThrowIfNull(Sender);
-        ArgumentNullException.ThrowIfNull(ToastService);
+        ArgumentNullException.ThrowIfNull(Snackbar);
 
         var request = new LogInCommand(
             _credentials.UserName,
@@ -31,7 +32,7 @@ public sealed partial class Index
 
         if (result.IsFailure)
         {
-            ToastService.ShowError(result.FirstError.Message);
+            Snackbar.Add(result.FirstError.Message, Severity.Error);
         }
         else
         {

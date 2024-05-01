@@ -4,7 +4,11 @@ module.exports = {
         '**/*.html',
         '**/*.razor',
         '**/*.razor.cs',
-        "./node_modules/flowbite/**/*.js",
+        './src/Modules/**/*.razor',
+        './src/Modules/**/*.razor.cs',
+        './src/Web/**/*.razor',
+        './src/InnovationPlatform.Web/**/*.razor.cs',
+        './node_modules/flowbite/**/*.js',
     ],
     theme: {
         extend: {},

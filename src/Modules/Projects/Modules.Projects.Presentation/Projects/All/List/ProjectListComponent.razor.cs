@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Modules.Projects.Application.GetProjects;
+﻿using Modules.Projects.Application.GetProjects;
 
 namespace Modules.Projects.Presentation.Projects.All.List;
 

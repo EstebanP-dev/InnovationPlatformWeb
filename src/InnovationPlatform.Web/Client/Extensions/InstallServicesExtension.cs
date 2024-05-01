@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Hosting;
 using Scrutor;
 using SharedKernel.Abstraction.IoC;
 using SharedKernel.Configuration;
