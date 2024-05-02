@@ -1,19 +1,39 @@
-﻿namespace Modules.Projects.Presentation.ProjectMembers;
+﻿using Modules.Projects.Application.GetAssessors;
+using Modules.Projects.Application.GetAuthors;
 
-public sealed record ProjectMemberViewModel(
-    string Id,
-    string? Avatar,
-    string Name)
+namespace Modules.Projects.Presentation.ProjectMembers;
+
+public sealed class ProjectMemberViewModel
 {
-    internal static IEnumerable<ProjectMemberViewModel> FromResponse()
+    public string Id { get; set; } = string.Empty;
+
+    public string? Avatar { get; set; }
+
+    public string Name { get; set; } = string.Empty;
+
+    private static ProjectMemberViewModel FromAssessorsResponse(GetAssessorsResponse? response)
     {
-        return
-        [
-            new ProjectMemberViewModel("1", "images/faces/face1.jpg", "John Doe"),
-            new ProjectMemberViewModel("2", "images/faces/face2.jpg", "Jane Doe"),
-            new ProjectMemberViewModel("3", "images/faces/face3.jpg", "John Smith"),
-            new ProjectMemberViewModel("4", "images/faces/face4.jpg", "Jane Smith"),
-            new ProjectMemberViewModel("5", "images/faces/face5.jpg", "John Johnson"),
-        ];
+        return new ProjectMemberViewModel
+        {
+            Id = response?.Id ?? "", Avatar = response?.Avatar, Name = response?.Name ?? ""
+        };
+    }
+
+    private static ProjectMemberViewModel FromAuthorsResponse(GetAuthorsResponse? response)
+    {
+        return new ProjectMemberViewModel
+        {
+            Id = response?.Id ?? "", Avatar = response?.Avatar, Name = response?.Name ?? ""
+        };
+    }
+
+    internal static IEnumerable<ProjectMemberViewModel> FromAssessorsResponse(IEnumerable<GetAssessorsResponse>? responses)
+    {
+        return responses?.Select(FromAssessorsResponse) ?? [];
+    }
+
+    internal static IEnumerable<ProjectMemberViewModel> FromAuthorsResponse(IEnumerable<GetAuthorsResponse>? responses)
+    {
+        return responses?.Select(FromAuthorsResponse) ?? [];
     }
 };

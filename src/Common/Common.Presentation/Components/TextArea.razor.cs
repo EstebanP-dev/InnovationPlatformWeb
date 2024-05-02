@@ -20,10 +20,9 @@ public sealed partial class TextArea
     [Parameter]
     public EventCallback<string?> ValueChanged { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    private void OnValueChanged(ChangeEventArgs e)
     {
-        await ValueChanged
-            .InvokeAsync(Value)
-            .ConfigureAwait(false);
+        Value = e.Value?.ToString();
+        ValueChanged.InvokeAsync(Value);
     }
 }

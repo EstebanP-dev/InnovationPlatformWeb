@@ -1,6 +1,4 @@
-﻿using SharedKernel.Primitives;
-
-namespace Modules.Projects.Application.GetTotalStatusCountByUser;
+﻿namespace Modules.Projects.Application.GetTotalStatusCountByUser;
 
 internal sealed class GetTotalStatusCountByUserQueryHandler(
         IProjectsClient client)

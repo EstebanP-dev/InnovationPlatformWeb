@@ -1,9 +1,10 @@
-﻿namespace Modules.Projects.Presentation.ProjectMembers;
+﻿using Modules.Projects.Presentation.Deliverables;
+
+namespace Modules.Projects.Presentation.ProjectMembers;
 
 public sealed partial class MemberAutocomplete
 {
-    private readonly ProjectMembersCollection _data = [..ProjectMemberViewModel.FromResponse()];
-    private readonly ProjectMembersCollection _selectedItems = [];
+    private readonly Dispatcher _dispatcher = Dispatcher.CreateDefault();
 
     [Inject]
     public IDialogService? DialogService { get; init; }
@@ -14,9 +15,20 @@ public sealed partial class MemberAutocomplete
     [Parameter]
     public string? AddButtonTitle { get; set; }
 
-    private bool IsAddButtonDisabled => _selectedItems.Count == MaximumMembers;
+    [Parameter]
+#pragma warning disable CA2227
+    public ProjectMembersCollection Data { get; set; } = [];
 
-    private async Task OpenDialog()
+    [Parameter]
+    public ProjectMembersCollection SelectedItems { get; set; } = [];
+#pragma warning restore CA2227
+
+    [Parameter]
+    public EventCallback<ProjectMembersCollection> SelectedItemsChanged { get; set; }
+
+    private bool IsAddButtonDisabled => SelectedItems.ToArray().Length == MaximumMembers;
+
+    private void OpenDialog()
     {
         ArgumentNullException.ThrowIfNull(DialogService);
 
@@ -24,8 +36,8 @@ public sealed partial class MemberAutocomplete
         {
             {
                 x => x.Data,
-                _data
-                    .Where(x => !_selectedItems.Contains(x))
+                Data
+                    .Where(x => !SelectedItems.Contains(x))
             },
             {
                 x => x.MaximumValuesHasBeenPicked,
@@ -33,20 +45,36 @@ public sealed partial class MemberAutocomplete
             }
         };
 
-        var dialog = await DialogService
-            .ShowAsync<PickUserDialog>("Choose a member", parameters)
-            .ConfigureAwait(false);
-
-        var result = await dialog.Result.ConfigureAwait(false);
-
-        if (!result.Canceled)
+        _dispatcher.InvokeAsync(async () =>
         {
-            _selectedItems.Add((ProjectMemberViewModel)result.Data);
-        }
+            var dialog = await DialogService
+                .ShowAsync<PickUserDialog>("Choose a member", parameters)
+                .ConfigureAwait(false);
+
+            var result = await dialog.Result.ConfigureAwait(false);
+
+            if (!result.Canceled)
+            {
+                var data = (ProjectMemberViewModel)result.Data;
+
+                SelectedItems.Add(data);
+
+                await SelectedItemsChanged
+                    .InvokeAsync(SelectedItems)
+                    .ConfigureAwait(false);
+            }
+        });
     }
 
     private void RemoveItem(ProjectMemberViewModel item)
     {
-        _selectedItems.Remove(item);
+        SelectedItems.Remove(item);
+
+        _dispatcher.InvokeAsync(async () =>
+        {
+            await SelectedItemsChanged
+                .InvokeAsync(SelectedItems)
+                .ConfigureAwait(false);
+        });
     }
 }

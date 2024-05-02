@@ -16,6 +16,9 @@ public sealed partial class SelectBox<TValue>
     public string? Name { get; set; }
 
     [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
     public bool Required { get; set; }
 
     [Parameter]
@@ -24,10 +27,14 @@ public sealed partial class SelectBox<TValue>
     [Parameter]
     public EventCallback<TValue?> ValueChanged { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    private void OnValueChanged(ChangeEventArgs e)
     {
-        await ValueChanged
-            .InvokeAsync(Value)
-            .ConfigureAwait(false);
+        if (e.Value is not TValue value)
+        {
+            return;
+        }
+
+        Value = value;
+        ValueChanged.InvokeAsync(value);
     }
 }

@@ -1,0 +1,20 @@
+﻿<SelectBox TValue="string" @bind-Value="SelectedType" Name="project_types_selector" Label="Type" Title="Elige un tipo">
+    @if (_data.Any())
+    {
+        foreach(var item in _data)
+        {
+            if (item.Id == SelectedType)
+            {
+                <option value="@item.Id" selected>@item.Name</option>
+            }
+            else
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        }
+    }
+    else
+    {
+        <option>No information</option>
+    }
+</SelectBox>

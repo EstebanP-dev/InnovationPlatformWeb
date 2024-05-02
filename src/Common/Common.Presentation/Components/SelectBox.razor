@@ -1,12 +1,16 @@
 ﻿@typeparam TValue
 
-<label for="@Name"
-       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-    @Label
-</label>
-<InputSelect id="@Name"
-             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-             @bind-Value="Value">
-    <option selected>@Placeholder</option>
+<label for="@Name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@Label</label>
+<select id="@Name"
+        @bind="Value"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    @if (Value is null)
+    {
+        <option selected>@Title</option>
+    }
+    else
+    {
+        <option>@Title</option>
+    }
     @ChildContent
-</InputSelect>
+</select>

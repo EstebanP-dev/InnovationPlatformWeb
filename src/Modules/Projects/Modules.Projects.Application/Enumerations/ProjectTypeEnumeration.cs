@@ -1,6 +1,4 @@
-﻿using SharedKernel.Primitives;
-
-namespace Modules.Projects.Application.Enumerations;
+﻿namespace Modules.Projects.Application.Enumerations;
 
 public sealed class ProjectTypeEnumeration(int value, string name, string icon)
     : SmartEnumeration<ProjectTypeEnumeration>(value, name)

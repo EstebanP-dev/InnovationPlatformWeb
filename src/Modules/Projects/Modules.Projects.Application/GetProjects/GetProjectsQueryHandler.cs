@@ -1,6 +1,4 @@
-﻿using SharedKernel.Primitives;
-
-namespace Modules.Projects.Application.GetProjects;
+﻿namespace Modules.Projects.Application.GetProjects;
 
 internal sealed class GetProjectsQueryHandler(
         IProjectsClient client)
