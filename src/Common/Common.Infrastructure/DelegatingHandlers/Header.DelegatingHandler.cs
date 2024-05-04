@@ -1,8 +1,11 @@
 ﻿using Common.Application.Storage;
+using Common.Infrastructure.Settings;
 
 namespace Common.Infrastructure.DelegatingHandlers;
 
-internal sealed class HeaderDelegatingHandler(IAuthSessionStorage authSessionStorage)
+internal sealed class HeaderDelegatingHandler(
+        IAuthSessionStorage authSessionStorage,
+        IOptions<TenantSettings> tenantSettings)
     : DelegatingHandler, IScopedDependency
 {
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -14,6 +17,13 @@ internal sealed class HeaderDelegatingHandler(IAuthSessionStorage authSessionSto
         var userId = await authSessionStorage
             .Get<string>(AuthSessionKeys.UserId, cancellationToken)
             .ConfigureAwait(false);
+
+        var tenant = tenantSettings.Value.UsbTenant;
+
+        if (!string.IsNullOrWhiteSpace(tenant))
+        {
+            request.Headers.Add("tenant_id", tenant);
+        }
 
         if (!string.IsNullOrWhiteSpace(token))
         {

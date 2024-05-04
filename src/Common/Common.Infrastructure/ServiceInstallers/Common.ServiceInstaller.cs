@@ -13,7 +13,8 @@ internal sealed class CommonServiceInstaller : IServiceInstaller
 
         services
             .AddBlazoredSessionStorage()
-            .ConfigureOptions<AppConfigureOption<ApiSettings>>();
+            .ConfigureOptions<AppConfigureOption<ApiSettings>>()
+            .ConfigureOptions<AppConfigureOption<TenantSettings>>();
 
         services
             .AddMediatR(options =>

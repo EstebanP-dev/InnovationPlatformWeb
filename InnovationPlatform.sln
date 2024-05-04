@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnovationPlatform.Web.Shar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{C400A8DE-CC95-4550-BAD9-C1DD052B0470}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Projects.Domain", "src\Modules\Projects\Modules.Projects.Domain\Modules.Projects.Domain.csproj", "{E8092DCE-DC65-44F6-84B3-6DB1F35840F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{3694268E-A765-4CF6-BE7D-BD74D1747856}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3694268E-A765-4CF6-BE7D-BD74D1747856}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3694268E-A765-4CF6-BE7D-BD74D1747856}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8092DCE-DC65-44F6-84B3-6DB1F35840F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8092DCE-DC65-44F6-84B3-6DB1F35840F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8092DCE-DC65-44F6-84B3-6DB1F35840F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8092DCE-DC65-44F6-84B3-6DB1F35840F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,5 +147,6 @@ Global
 		{8136A125-1619-4D7F-86F7-21AE082E1DF4} = {C400A8DE-CC95-4550-BAD9-C1DD052B0470}
 		{9C4B969B-1776-44F9-8089-3C250E58AF96} = {C400A8DE-CC95-4550-BAD9-C1DD052B0470}
 		{3694268E-A765-4CF6-BE7D-BD74D1747856} = {C400A8DE-CC95-4550-BAD9-C1DD052B0470}
+		{E8092DCE-DC65-44F6-84B3-6DB1F35840F8} = {F6621FDD-8864-4B65-BEE7-E7B8BC5D6F82}
 	EndGlobalSection
 EndGlobal

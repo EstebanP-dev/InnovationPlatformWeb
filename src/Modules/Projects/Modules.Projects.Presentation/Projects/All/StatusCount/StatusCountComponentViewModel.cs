@@ -1,5 +1,5 @@
 ﻿using Modules.Projects.Application.Enumerations;
-using Modules.Projects.Application.GetTotalStatusCountByUser;
+using Modules.Projects.Application.Projects.GetTotalStatusCountByUser;
 
 namespace Modules.Projects.Presentation.Projects.All.StatusCount;
 

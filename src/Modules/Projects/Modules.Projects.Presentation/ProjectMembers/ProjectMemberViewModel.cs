@@ -1,5 +1,5 @@
-﻿using Modules.Projects.Application.GetAssessors;
-using Modules.Projects.Application.GetAuthors;
+﻿using Modules.Projects.Application.Assessors.GetAssessors;
+using Modules.Projects.Application.Authors.GetAuthors;
 
 namespace Modules.Projects.Presentation.ProjectMembers;
 

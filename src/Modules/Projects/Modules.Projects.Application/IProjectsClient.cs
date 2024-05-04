@@ -1,9 +1,10 @@
 ﻿using Common.Application.Responses;
-using Modules.Projects.Application.GetAssessors;
-using Modules.Projects.Application.GetAuthors;
-using Modules.Projects.Application.GetProjects;
-using Modules.Projects.Application.GetProjectTypes;
-using Modules.Projects.Application.GetTotalStatusCountByUser;
+using Modules.Projects.Application.Assessors.GetAssessors;
+using Modules.Projects.Application.Authors.GetAuthors;
+using Modules.Projects.Application.Projects.CreateProject;
+using Modules.Projects.Application.Projects.GetProjects;
+using Modules.Projects.Application.Projects.GetTotalStatusCountByUser;
+using Modules.Projects.Application.Types.GetProjectTypes;
 using Refit;
 
 namespace Modules.Projects.Application;
@@ -24,4 +25,8 @@ public interface IProjectsClient
 
     [Get("/types/for_creation")]
     Task<BaseResponse<IEnumerable<GetProjectTypesResponse>>> GetProjectTypesAsync();
+
+    [Multipart]
+    [Post("/")]
+    Task<BaseResponse> CreateProjectAsync([Body] MultipartFormDataContent request);
 }

@@ -1,9 +1,12 @@
 ﻿namespace Common.Application.Responses;
 
-public sealed class BaseResponse
+public sealed class BaseResponse<TResponse>
 {
     [JsonPropertyName("errors")]
     public IEnumerable<BaseErrorResponse> Errors { get; set; } = [];
+
+    [JsonPropertyName("value")]
+    public TResponse? Value { get; set; }
 
     public bool IsSuccess()
     {

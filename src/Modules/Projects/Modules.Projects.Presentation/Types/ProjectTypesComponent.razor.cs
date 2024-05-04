@@ -1,4 +1,4 @@
-﻿using Modules.Projects.Application.GetProjectTypes;
+﻿using Modules.Projects.Application.Types.GetProjectTypes;
 
 namespace Modules.Projects.Presentation.Types;
 

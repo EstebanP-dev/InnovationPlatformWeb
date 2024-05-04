@@ -1,13 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>$(NetVersion)</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Common\Common.Application\Common.Application.csproj" />
+      <ProjectReference Include="..\Modules.Projects.Domain\Modules.Projects.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assessors\" />
+      <Folder Include="Authors\" />
+      <Folder Include="Types\" />
     </ItemGroup>
 
 </Project>

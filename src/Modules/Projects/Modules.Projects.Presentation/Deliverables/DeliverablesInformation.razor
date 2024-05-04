@@ -1,0 +1,36 @@
+﻿<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+    <div class="flow-root">
+        <h3 class="text-xl font-semibold dark:text-white">Entregables</h3>
+        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+            @if (Deliverables.Any())
+            {
+                @foreach (var item in Deliverables)
+                {
+                    <li class="py-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <span class="w-6 h-6 dark:text-white mdi mdi-note"></span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-base font-semibold text-gray-900 truncate dark:text-white">
+                                    @item.Name
+                                </p>
+                                <p class="text-sm font-normal text-gray-500 truncate dark:text-gray-400">
+                                    @item.Description
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center">
+                                <a href="#" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Revoke</a>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+            else
+            {
+                <p class="text-black dark:text-white text-lg">No hay información.</p>
+            }
+        </ul>
+        <button @onclick="OpenDialog" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Agregar otro</button>
+    </div>
+</div>

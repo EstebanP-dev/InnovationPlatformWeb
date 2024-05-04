@@ -20,9 +20,14 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
                         </svg>
                         <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">DOCX, or PDF (MAX. 4MB)</p>
                     </div>
-                    <input id="dropzone-file" type="file" class="hidden"/>
+                    <InputFile id="dropzone-file"
+                               @key="inputFileId"
+                               type="file"
+                               class="rounded"
+                               accept="@(string.Join(',', _allowedExtensions))"
+                               OnChange="OnFileChanged" />
                 </label>
             </div>
         </EditForm>
@@ -32,22 +37,3 @@
         <button class="bg-green-600 text-white p-2 rounded" @onclick="OnSave">Guardar</button>
     </DialogActions>
 </MudDialog>
-
-@code
-{
-    [CascadingParameter]
-    private MudDialogInstance? MudDialog { get; init; }
-
-    [Parameter]
-    public ProjectDeliverableViewModel Data { get; set; } = new();
-
-    private void OnCancel()
-    {
-        MudDialog?.Cancel();
-    }
-
-    private void OnSave()
-    {
-        MudDialog?.Close(DialogResult.Ok(Data));
-    }
-}

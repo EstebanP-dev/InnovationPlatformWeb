@@ -1,4 +1,4 @@
-﻿using Modules.Projects.Application.GetProjects;
+﻿using Modules.Projects.Application.Projects.GetProjects;
 
 namespace Modules.Projects.Presentation.Projects.All.List;
 

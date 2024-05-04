@@ -1,14 +1,27 @@
-﻿namespace Modules.Projects.Presentation.Deliverables;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.AspNetCore.Components.Forms;
 
-public sealed class ProjectDeliverableViewModel
+namespace Modules.Projects.Presentation.Deliverables;
+
+public sealed class ProjectDeliverableViewModel : ObservableValidator
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-
+    [Required]
+    [StringLength(maximumLength: 255, MinimumLength = 5)]
     public string Name { get; set; } = string.Empty;
 
+    [StringLength(maximumLength: 1000, MinimumLength = 5)]
     public string Description { get; set; } = string.Empty;
 
-#pragma warning disable CA1056
-    public string Url { get; set; } = string.Empty;
-#pragma warning restore CA1056
+    [Required]
+    public IBrowserFile? File { get; set; }
+
+    public bool IsValid(out IEnumerable<ValidationResult> errors)
+    {
+        ValidateAllProperties();
+
+        errors = GetErrors();
+
+        return !HasErrors;
+    }
 }
