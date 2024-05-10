@@ -7,8 +7,25 @@ public sealed partial class ProjectTypesComponent
     private readonly Dispatcher _dispatcher = Dispatcher.CreateDefault();
     private readonly ProjectTypesCollection _data = [];
 
+    private string _selectedType = "";
+
     [Parameter]
-    public string? SelectedType { get; set; }
+#pragma warning disable BL0007
+    public string SelectedType
+#pragma warning restore BL0007
+    {
+        get => _selectedType;
+        set
+        {
+            if (_selectedType == value)
+            {
+                return;
+            }
+
+            _selectedType = value;
+            SelectedTypeChanged.InvokeAsync(_selectedType);
+        }
+    }
 
     [Parameter]
     public EventCallback<string?> SelectedTypeChanged { get; set; }

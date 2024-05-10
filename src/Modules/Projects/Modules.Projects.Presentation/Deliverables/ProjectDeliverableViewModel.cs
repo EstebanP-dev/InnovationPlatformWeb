@@ -1,11 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Common.Presentation.Files;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.AspNetCore.Components.Forms;
+using Modules.Projects.Application.Projects.CreateProject;
+using Modules.Projects.Application.Projects.GetProject;
 
 namespace Modules.Projects.Presentation.Deliverables;
 
-public sealed class ProjectDeliverableViewModel : ObservableValidator
+public sealed class ProjectDeliverableViewModel : BaseViewModel
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
+    
     [Required]
     [StringLength(maximumLength: 255, MinimumLength = 5)]
     public string Name { get; set; } = string.Empty;
@@ -16,12 +21,36 @@ public sealed class ProjectDeliverableViewModel : ObservableValidator
     [Required]
     public IBrowserFile? File { get; set; }
 
-    public bool IsValid(out IEnumerable<ValidationResult> errors)
+    [Required]
+    public string Type { get; set; } = string.Empty;
+
+    internal static ProjectDeliverableViewModel FromGetProjectDeliverableResponse(GetProjectDeliverableResponse? response)
     {
-        ValidateAllProperties();
+        return new ProjectDeliverableViewModel
+        {
+            Id = Guid.NewGuid(),
+            Name = response?.Name ?? "",
+            Description = response?.Description ?? "",
+            Type = response?.Type ?? ""
+        };
+    }
 
-        errors = GetErrors();
+    internal static (CreateProjectDeliverableDto?, string) ToRequest(ProjectDeliverableViewModel viewModel)
+    {
+        if (viewModel.File is null)
+        {
+            return (null, "El archivo es requerido.");
+        }
 
-        return !HasErrors;
+        var response = new CreateProjectDeliverableDto(
+            Guid.NewGuid(),
+            viewModel.File.Name,
+            viewModel.File.ContentType,
+            viewModel.Type,
+            viewModel.Name,
+            new FileProvider(viewModel.File),
+            viewModel.Description);
+
+        return (response, "");
     }
 }

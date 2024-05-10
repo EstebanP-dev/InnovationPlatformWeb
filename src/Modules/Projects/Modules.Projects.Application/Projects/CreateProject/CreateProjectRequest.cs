@@ -17,9 +17,6 @@ public sealed class CreateProjectRequest
     [JsonPropertyName("authors")]
     public required IEnumerable<string> AuthorIds { get; set; }
 
-    [JsonPropertyName("deliverables")]
-    public required IEnumerable<CreateProjectDeliverableRequest> Deliverables { get; set; }
-
     [JsonPropertyName("status")]
     public required string Status { get; set; }
 }

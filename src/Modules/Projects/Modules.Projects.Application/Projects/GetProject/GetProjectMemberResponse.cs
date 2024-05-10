@@ -1,6 +1,6 @@
-﻿namespace Modules.Projects.Application.Projects.GetProjects;
+﻿namespace Modules.Projects.Application.Projects.GetProject;
 
-public sealed class GetProjectsMemberResponse
+public sealed class GetProjectMemberResponse
 {
     [JsonPropertyName("id")]
     public string? Id { get; set; }

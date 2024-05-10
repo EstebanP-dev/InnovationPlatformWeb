@@ -25,14 +25,14 @@ internal sealed class LogInCommandHandler(
 
         if (resultValue is null)
         {
-            return Result.Failure<Success>(LogInErrors.UnhandledRequest);
+            return Result.Failure<Success>(GeneralErrors.UnhandledRequest);
         }
 
         var token = resultValue.Token;
 
         if (string.IsNullOrWhiteSpace(token))
         {
-            return Result.Failure<Success>(LogInErrors.UnhandledRequest);
+            return Result.Failure<Success>(GeneralErrors.UnhandledRequest);
         }
 
         await authSessionStorage

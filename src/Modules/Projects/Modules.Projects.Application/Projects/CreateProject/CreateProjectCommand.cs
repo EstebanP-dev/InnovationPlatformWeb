@@ -10,7 +10,7 @@ public sealed record CreateProjectCommand(
     string Status)
     : ICommand<Created>
 {
-    private static CreateProjectDeliverableRequest ToDeliverableRequest(CreateProjectDeliverableDto deliverable) =>
+    internal static CreateProjectDeliverableRequest ToDeliverableRequest(CreateProjectDeliverableDto deliverable) =>
         new()
         {
             Id = deliverable.Identifier,
@@ -27,7 +27,6 @@ public sealed record CreateProjectCommand(
             Title = command.Title,
             Description = command.Description,
             AuthorIds = command.Authors,
-            Deliverables = command.Deliverables.Select(ToDeliverableRequest),
             Status = command.Status
         };
 }

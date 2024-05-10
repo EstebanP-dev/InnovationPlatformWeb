@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
+﻿using Refit;
 
 namespace Modules.Projects.Application.Projects.CreateProject;
 
@@ -10,10 +8,8 @@ internal sealed class CreateProjectCommandHandler(
 {
     public async Task<Result<Created>> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
-        var content = GetMultipartContent(request);
-
         var result = await client
-            .CreateProjectAsync(content)
+            .CreateProjectAsync(CreateProjectCommand.ToRequest(request))
             .ConfigureAwait(false);
 
         if (!result.IsSuccess())
@@ -23,33 +19,42 @@ internal sealed class CreateProjectCommandHandler(
             return Result.Failure<Created>(errors);
         }
 
-        return Result.Success(Results.Created);
-    }
+        var projectResponse = result.Value;
 
-    private static MultipartFormDataContent GetMultipartContent(CreateProjectCommand command)
-    {
-        MultipartFormDataContent content = [];
-
-        var request = CreateProjectCommand.ToRequest(command);
-
-        using var requestContent = new StringContent(
-            JsonSerializer.Serialize(request),
-            Encoding.UTF8,
-            "application/json");
-
-        content.Add(requestContent);
-
-        foreach (var deliverable in command.Deliverables)
+        if (string.IsNullOrWhiteSpace(projectResponse))
         {
-            using var filesContent = new StreamContent(deliverable.File);
-
-            filesContent.Headers.ContentType = new MediaTypeHeaderValue(deliverable.ContentType);
-
-            var extension = Path.GetExtension(deliverable.Filename);
-
-            content.Add(filesContent, "files", deliverable.Identifier + "." + extension);
+            return Result.Failure<Created>(GeneralErrors.UnhandledRequest);
         }
 
-        return content;
+        var deliverableTasks = request
+            .Deliverables
+            .Select(x =>
+            {
+                var deliverableRequest = CreateProjectCommand.ToDeliverableRequest(x);
+
+                var file = x.File;
+
+                using var fileStream = file.OpenReadStream();
+
+                var streamPart = new StreamPart(fileStream, file.Name, file.ContentType);
+
+                return client.CreateDeliverablesAsync(projectResponse, deliverableRequest, streamPart);
+            });
+
+        var deliverableResults = await Task
+            .WhenAll(deliverableTasks)
+            .ConfigureAwait(false);
+
+        if (deliverableResults.Any(x => !x.IsSuccess()))
+        {
+            var errors = deliverableResults
+                .SelectMany(x => x.MapErrors())
+                .ToArray();
+
+            return Result.Failure<Created>(errors);
+        }
+
+
+        return Result.Success(Results.Created);
     }
 }

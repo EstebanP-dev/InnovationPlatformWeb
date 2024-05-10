@@ -6,7 +6,7 @@ public sealed record MemberViewModel(
     string Id,
     string FullName)
 {
-    internal static MemberViewModel FromResponse(MemberResponse? member)
+    internal static MemberViewModel FromResponse(GetProjectsMemberResponse? member)
     {
         return new MemberViewModel(
             member?.Id ?? string.Empty,

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor.Extensions;
+using Modules.Projects.Application.DeliverableTypes.GetDeliverableTypes;
 
 namespace Modules.Projects.Presentation.Deliverables;
 
 public partial class FormDeliverableDialog
 {
-    private readonly string[] _allowedExtensions = [".pdf", ".doc", ".docx"];
-    private Guid inputFileId = Guid.NewGuid();
+    private string[] _allowedExtensions = [];
+    private Guid _inputFileId = Guid.NewGuid();
 
     [CascadingParameter]
     private MudDialogInstance? MudDialog { get; init; }
@@ -14,8 +14,18 @@ public partial class FormDeliverableDialog
     [Parameter]
     public ProjectDeliverableViewModel Data { get; set; } = new();
 
+    [Parameter]
+    public IEnumerable<GetDeliverableTypesResponse> DeliverableTypes { get; set; } = [];
+
     [Inject]
     private ISnackbar? Snackbar { get; init; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _allowedExtensions = DeliverableTypes.Select(x => x.Extension!).ToArray();
+    }
 
     private void OnCancel()
     {
@@ -24,6 +34,27 @@ public partial class FormDeliverableDialog
 
     private void OnSave()
     {
+        var deliverableType = DeliverableTypes
+            .FirstOrDefault(x => x.Extension == Path.GetExtension(Data.File?.Name));
+
+        if (deliverableType is null || string.IsNullOrWhiteSpace(deliverableType.Id))
+        {
+            Snackbar?.Add(
+                "Ha sucedido un error inesperado, por favor intente más tarde.",
+                Severity.Error);
+            return;
+        }
+
+        Data.Type = deliverableType.Id;
+
+        if (!Data.IsValid())
+        {
+            var errors = Data.ErrorsCollection.First();
+            Snackbar?.Add(errors.Message, Severity.Warning);
+
+            return;
+        }
+
         MudDialog?.Close(DialogResult.Ok(Data));
     }
 
@@ -39,7 +70,7 @@ public partial class FormDeliverableDialog
                 "El archivo seleccionado no es válido, los formatos permitidos son PDF, DOC y DOCX.",
                 Severity.Error);
 
-            inputFileId = Guid.NewGuid();
+            _inputFileId = Guid.NewGuid();
 
             return;
         }
@@ -50,7 +81,7 @@ public partial class FormDeliverableDialog
                 "El archivo es demasiado grande, el tamaño máximo permitido es de 4MB.",
                 Severity.Error);
 
-            inputFileId = Guid.NewGuid();
+            _inputFileId = Guid.NewGuid();
             return;
         }
 

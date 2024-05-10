@@ -21,7 +21,7 @@
         {
             @foreach (var item in Data)
             {
-                <TableRow>
+                <TableRow OnClick="() => item.GoToDetails(NavigationManager)">
                     <ChildContent>
                         <TableCell Remarkable="true">
                             <div class="flex items-center">

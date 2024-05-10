@@ -1,12 +1,15 @@
-﻿namespace Modules.Projects.Application.Projects.GetProjects;
+﻿namespace Modules.Projects.Application.Projects.GetProject;
 
-public sealed class GetProjectsDeliverableResponse
+public sealed class GetProjectDeliverableResponse
 {
     [JsonPropertyName("url")]
     public Uri? Url { get; set; }
 
     [JsonPropertyName("name")]
     public string? Name { get; set; }
+
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
 
     [JsonPropertyName("type")]
     public string? Type { get; set; }

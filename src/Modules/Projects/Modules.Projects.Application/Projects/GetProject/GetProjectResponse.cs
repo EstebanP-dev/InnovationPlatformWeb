@@ -1,7 +1,7 @@
-﻿namespace Modules.Projects.Application.Projects.GetProjects;
+﻿namespace Modules.Projects.Application.Projects.GetProject;
 
 
-public sealed class GetProjectsResponse
+public sealed class GetProjectResponse
 {
     [JsonPropertyName("id")]
     public string? Id { get; set; }
@@ -20,13 +20,13 @@ public sealed class GetProjectsResponse
 
     [JsonPropertyName("assessor")]
 
-    public GetProjectsMemberResponse? Assessor { get; set; }
+    public GetProjectMemberResponse? Assessor { get; set; }
 
     [JsonPropertyName("authors")]
-    public IEnumerable<GetProjectsMemberResponse> Authors { get; set; } = [];
+    public IEnumerable<GetProjectMemberResponse> Authors { get; set; } = [];
 
     [JsonPropertyName("deliverables")]
-    public IEnumerable<GetProjectsDeliverableResponse> Deliverables { get; set; } = [];
+    public IEnumerable<GetProjectDeliverableResponse> Deliverables { get; set; } = [];
 
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }

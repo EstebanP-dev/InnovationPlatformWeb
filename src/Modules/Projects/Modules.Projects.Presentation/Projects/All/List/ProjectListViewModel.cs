@@ -15,6 +15,11 @@ public sealed record ProjectListViewModel(
     DateTime? CreatedAt,
     DateTime? UpdatedAt)
 {
+    internal void GoToDetails(NavigationManager? navigationManager)
+    {
+        navigationManager?.NavigateTo($"/projects/{Id}");
+    }
+
     private static ProjectListViewModel FromResponse(GetProjectsResponse? response)
     {
         return new ProjectListViewModel(

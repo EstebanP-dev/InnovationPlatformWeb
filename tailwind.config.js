@@ -4,7 +4,7 @@ module.exports = {
         '**/*.html',
         '**/*.razor',
         '**/*.razor.cs',
-        './src/Modules/**/*.razor',
+        './src/Modules/Projects/Modules.Projects.Presentation/**/*.razor',
         './src/Modules/**/*.razor.cs',
         './src/Web/**/*.razor',
         './src/InnovationPlatform.Web/**/*.razor.cs',
@@ -27,6 +27,7 @@ module.exports = {
         'bg-gray-600',
         'bg-green-600',
         'bg-yellow-600',
+        'bg-red-600',
         'px-6',
         'py-3'
     ],

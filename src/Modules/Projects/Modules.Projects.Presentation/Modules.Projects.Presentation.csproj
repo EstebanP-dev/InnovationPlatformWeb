@@ -36,6 +36,7 @@
     <ItemGroup>
       <UpToDateCheckInput Remove="Projects\ProjectsTable\ProjectsTable.razor" />
       <UpToDateCheckInput Remove="Projects\Create\Index.razor" />
+      <UpToDateCheckInput Remove="Projects\Details\Index.razor" />
     </ItemGroup>
 
 </Project>

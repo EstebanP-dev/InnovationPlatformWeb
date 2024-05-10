@@ -1,4 +1,6 @@
-﻿namespace Modules.Projects.Application.Projects.CreateProject;
+﻿using Common.Application.Files;
+
+namespace Modules.Projects.Application.Projects.CreateProject;
 
 public sealed record CreateProjectDeliverableDto(
     Guid Identifier,
@@ -6,5 +8,5 @@ public sealed record CreateProjectDeliverableDto(
     string ContentType,
     string Type,
     string Name,
-    FileStream File,
+    IFileProvider File,
     string Description);

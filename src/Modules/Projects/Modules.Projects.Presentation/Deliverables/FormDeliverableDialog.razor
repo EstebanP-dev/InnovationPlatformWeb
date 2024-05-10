@@ -23,7 +23,7 @@
                         <p class="text-xs text-gray-500 dark:text-gray-400">DOCX, or PDF (MAX. 4MB)</p>
                     </div>
                     <InputFile id="dropzone-file"
-                               @key="inputFileId"
+                               @key="_inputFileId"
                                type="file"
                                class="rounded"
                                accept="@(string.Join(',', _allowedExtensions))"

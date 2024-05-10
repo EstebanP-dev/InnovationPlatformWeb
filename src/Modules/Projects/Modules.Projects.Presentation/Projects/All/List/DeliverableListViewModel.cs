@@ -9,7 +9,7 @@ public sealed record DeliverableViewModel(
     DateTime CreatedAt,
     DateTime UpdatedAt)
 {
-    internal static DeliverableViewModel FromResponse(DeliverableResponse? deliverable)
+    internal static DeliverableViewModel FromResponse(GetProjectsDeliverableResponse? deliverable)
     {
         return new DeliverableViewModel(
             deliverable?.Url ?? new Uri(string.Empty),
