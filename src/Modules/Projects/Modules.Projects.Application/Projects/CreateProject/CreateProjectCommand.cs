@@ -5,6 +5,7 @@ public sealed record CreateProjectCommand(
     string Type,
     string Title,
     string? Description,
+    string DeliverableFolder,
     IEnumerable<string> Authors,
     IEnumerable<CreateProjectDeliverableDto> Deliverables,
     string Status)
@@ -13,8 +14,9 @@ public sealed record CreateProjectCommand(
     internal static CreateProjectDeliverableRequest ToDeliverableRequest(CreateProjectDeliverableDto deliverable) =>
         new()
         {
-            Id = deliverable.Identifier,
+            Link = deliverable.File,
             TypeId = deliverable.Type,
+            Status = deliverable.Status,
             Name = deliverable.Name,
             Description = deliverable.Description
         };
@@ -26,6 +28,7 @@ public sealed record CreateProjectCommand(
             TypeId = command.Type,
             Title = command.Title,
             Description = command.Description,
+            DeliverableFolder = command.DeliverableFolder,
             AuthorIds = command.Authors,
             Status = command.Status
         };

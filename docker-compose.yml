@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  innovationplatform.web.server:
+    image: ${DOCKER_REGISTRY-}innovationplatformwebserver
+    container_name: INNP.Web.Server
+    build:
+      context: .
+      dockerfile: src/InnovationPlatform.Web/Server/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5187:5187"
+      - "5188:5188"

@@ -21,6 +21,9 @@ public sealed partial class SelectBox<TValue>
     [Parameter]
     public bool Required { get; set; }
 
+    [Parameter]
+    public bool Disabled { get; set; }
+
     private TValue? _value;
 
     [Parameter]

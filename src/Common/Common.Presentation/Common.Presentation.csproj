@@ -28,4 +28,11 @@
       <ProjectReference Include="..\Common.Application\Common.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Scenes\Sidebar.razor" />
+      <AdditionalFiles Include="Scenes\SidebarItem.razor" />
+      <AdditionalFiles Include="Scenes\SidebarProfileComponent.razor" />
+      <AdditionalFiles Include="Scenes\Toolbar.razor" />
+    </ItemGroup>
+
 </Project>

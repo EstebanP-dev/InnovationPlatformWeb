@@ -69,5 +69,8 @@ public sealed partial class GeneralInformationComponent
     }
 
     [Parameter]
+    public bool FromCreate { get; set; } = true;
+
+    [Parameter]
     public EventCallback<string> TypeChanged { get; set; }
 }

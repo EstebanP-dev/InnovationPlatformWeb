@@ -54,7 +54,15 @@ public sealed partial class Index
 
             var project = result.Value;
 
-            _viewModel = FormViewModel.FromGetProjectResponse(project);
+            var viewModelResult = FormViewModel.FromGetProjectResponse(project);
+
+            if (viewModelResult.IsFailure)
+            {
+                Snackbar.Add(viewModelResult.FirstError.Message, Severity.Error);
+                return;
+            }
+
+            _viewModel = viewModelResult.Value;
 
             _isBusy = false;
             StateHasChanged();
@@ -91,59 +99,5 @@ public sealed partial class Index
             Snackbar.Add("Proyecto eliminado correctamente.", Severity.Success);
             NavigationManager.NavigateTo("/projects");
         });
-    }
-
-    private void HandleValidSubmit(bool ableToContinue = false)
-    {
-        ArgumentNullException.ThrowIfNull(NavigationManager);
-        ArgumentNullException.ThrowIfNull(Sender);
-        ArgumentNullException.ThrowIfNull(Snackbar);
-
-        if (!ableToContinue)
-        {
-            return;
-        }
-
-        if (_isBusy)
-        {
-            return;
-        }
-
-        if (!_viewModel.IsValid())
-        {
-            Snackbar.Add(_viewModel.FirstError.Message, Severity.Error);
-            return;
-        }
-
-        _isBusy = true;
-
-        var request = FormViewModel.ToCreateRequest(_viewModel, out var message);
-
-        if (request is null)
-        {
-            Snackbar.Add(message, Severity.Error);
-            _isBusy = false;
-            return;
-        }
-
-        _dispatcher.InvokeAsync(async () =>
-        {
-            var result = await Sender
-                .Send(request)
-                .ConfigureAwait(false);
-
-            _isBusy = false;
-
-            if (result.IsFailure)
-            {
-                Snackbar.Add(result.FirstError.Message, Severity.Error);
-                return;
-            }
-
-            Snackbar.Add("Proyecto creado correctamente.", Severity.Success);
-            NavigationManager.NavigateTo("/projects");
-        });
-
-        _isBusy = false;
     }
 }

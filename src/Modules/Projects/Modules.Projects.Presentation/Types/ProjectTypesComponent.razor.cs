@@ -30,6 +30,9 @@ public sealed partial class ProjectTypesComponent
     [Parameter]
     public EventCallback<string?> SelectedTypeChanged { get; set; }
 
+    [Parameter]
+    public bool FromCreate { get; set; }
+
     [Inject]
     private ISender? Sender { get; init; }
 

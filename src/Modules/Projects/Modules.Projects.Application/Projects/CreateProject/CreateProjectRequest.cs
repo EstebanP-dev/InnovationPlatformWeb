@@ -14,6 +14,9 @@ public sealed class CreateProjectRequest
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 
+    [JsonPropertyName("folder")]
+    public required string DeliverableFolder { get; set; }
+
     [JsonPropertyName("authors")]
     public required IEnumerable<string> AuthorIds { get; set; }
 

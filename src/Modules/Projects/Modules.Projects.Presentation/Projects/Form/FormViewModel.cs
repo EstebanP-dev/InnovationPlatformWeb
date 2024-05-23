@@ -4,11 +4,14 @@ using Modules.Projects.Application.Projects.CreateProject;
 using Modules.Projects.Application.Projects.GetProject;
 using Modules.Projects.Presentation.Deliverables;
 using Modules.Projects.Presentation.ProjectMembers;
+using SharedKernel.Primitives;
 
 namespace Modules.Projects.Presentation.Projects.Form;
 
 public sealed class FormViewModel : BaseViewModel
 {
+    public string? Id { get; set; } = string.Empty;
+
     [Required]
     [StringLength(255, MinimumLength = 2)]
     public string Title { get; set; } = string.Empty;
@@ -45,12 +48,14 @@ public sealed class FormViewModel : BaseViewModel
         return isValid && deliverablesResult.All(x => x);
     }
 
-    internal static FormViewModel FromGetProjectResponse(GetProjectResponse? response)
+    internal static Result<FormViewModel> FromGetProjectResponse(GetProjectResponse? response)
     {
         ArgumentNullException.ThrowIfNull(response);
+        ArgumentNullException.ThrowIfNull(response.Id);
 
         var viewModel = new FormViewModel
         {
+            Id = response.Id,
             Title = response.Title ?? "",
             Description = response.Description ?? "",
             Type = response.Type ?? "",
@@ -68,58 +73,56 @@ public sealed class FormViewModel : BaseViewModel
             [
                 ..response
                     .Deliverables
-                    .Select(ProjectDeliverableViewModel.FromGetProjectDeliverableResponse)
+                    .Select(x => ProjectDeliverableViewModel.FromGetProjectDeliverableResponse(x, response.Id))
             ]
         };
 
         return viewModel;
     }
 
-    internal static CreateProjectCommand? ToCreateRequest(FormViewModel? viewModel, out string message)
+    internal static Result<CreateProjectCommand> ToCreateRequest(FormViewModel? viewModel, string deliverableFolder)
     {
         ArgumentNullException.ThrowIfNull(viewModel);
 
-        message = string.Empty;
-
         if (!viewModel.Assessors.Any())
         {
-            message = "Al menos un asesor debe ser seleccionado.";
-            return null;
+            return Result.Failure<CreateProjectCommand>(Error.Validation("Al menos un asesor debe ser seleccionado."));
         }
 
         if (!viewModel.Authors.Any())
         {
-            message = "Al menos un autor debe ser seleccionado.";
-            return null;
+            return Result.Failure<CreateProjectCommand>(Error.Validation("Al menos un autor debe ser seleccionado."));
         }
 
         if (!viewModel.Deliverables.Any())
         {
-            message = "Al menos un entregable debe ser añadido.";
-            return null;
+            return Result.Failure<CreateProjectCommand>(Error.Validation("Al menos un entregable debe ser seleccionado."));
         }
 
         var assesor = viewModel.Assessors.First();
 
-        var deliverablesResult = viewModel
+        var deliverablesResults = viewModel
             .Deliverables
             .Select(ProjectDeliverableViewModel.ToRequest)
             .ToArray();
 
-        if (deliverablesResult.Any(x => x.Item1 is null))
+        // ReSharper disable once CoVariantArrayConversion
+        var deliverablesResult = Result.FirstFailureOrSuccess(deliverablesResults);
+
+        if (deliverablesResult.IsFailure)
         {
-            message = "Uno de los archivos es inválido.";
-            return null;
+            return Result.Failure<CreateProjectCommand>(deliverablesResult.Errors);
         }
 
-        var deliverables = deliverablesResult
-            .Select(x => x.Item1!);
+        var deliverables = deliverablesResults
+            .Select(x => x.Value);
 
         var request = new CreateProjectCommand(
             assesor.Id,
             viewModel.Type,
             viewModel.Title,
             viewModel.Description,
+            deliverableFolder,
             viewModel.Authors.Select(author => author.Id),
             deliverables,
             ProjectStatusEnumeration.Pending.Name);

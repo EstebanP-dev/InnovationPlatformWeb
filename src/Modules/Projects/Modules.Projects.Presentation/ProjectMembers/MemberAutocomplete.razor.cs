@@ -26,7 +26,10 @@ public sealed partial class MemberAutocomplete
     [Parameter]
     public EventCallback<ProjectMembersCollection> SelectedItemsChanged { get; set; }
 
-    private bool IsAddButtonDisabled => SelectedItems.ToArray().Length == MaximumMembers;
+    [Parameter]
+    public bool FromCreate { get; set; } = true;
+
+    private bool IsAddButtonDisabled => !FromCreate || SelectedItems.ToArray().Length == MaximumMembers;
 
     private void OpenDialog()
     {

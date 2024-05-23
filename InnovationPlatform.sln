@@ -47,17 +47,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.Projects.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.Projects.Application", "src\Modules\Projects\Modules.Projects.Application\Modules.Projects.Application.csproj", "{65C8DBBD-4681-4BC7-BC23-C0F7E016F912}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnovationPlatform.Web.Server", "src\InnovationPlatform.Web\Server\InnovationPlatform.Web.Server.csproj", "{9C4B969B-1776-44F9-8089-3C250E58AF96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InnovationPlatform.Web.Server", "src\InnovationPlatform.Web\Server\InnovationPlatform.Web.Server.csproj", "{9C4B969B-1776-44F9-8089-3C250E58AF96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnovationPlatform.Web.Client", "src\InnovationPlatform.Web\Client\InnovationPlatform.Web.Client.csproj", "{8136A125-1619-4D7F-86F7-21AE082E1DF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InnovationPlatform.Web.Client", "src\InnovationPlatform.Web\Client\InnovationPlatform.Web.Client.csproj", "{8136A125-1619-4D7F-86F7-21AE082E1DF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnovationPlatform.Web.Shared", "src\InnovationPlatform.Web\Shared\InnovationPlatform.Web.Shared.csproj", "{3694268E-A765-4CF6-BE7D-BD74D1747856}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InnovationPlatform.Web.Shared", "src\InnovationPlatform.Web\Shared\InnovationPlatform.Web.Shared.csproj", "{3694268E-A765-4CF6-BE7D-BD74D1747856}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{C400A8DE-CC95-4550-BAD9-C1DD052B0470}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Projects.Domain", "src\Modules\Projects\Modules.Projects.Domain\Modules.Projects.Domain.csproj", "{E8092DCE-DC65-44F6-84B3-6DB1F35840F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.Projects.Domain", "src\Modules\Projects\Modules.Projects.Domain\Modules.Projects.Domain.csproj", "{E8092DCE-DC65-44F6-84B3-6DB1F35840F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain", "src\Common\Common.Domain\Common.Domain.csproj", "{47BA8CD0-58CF-438F-B4B2-82C4B6FE8F2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Domain", "src\Common\Common.Domain\Common.Domain.csproj", "{47BA8CD0-58CF-438F-B4B2-82C4B6FE8F2C}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F0A703E0-F465-4515-84A7-34243A9B9E2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +131,10 @@ Global
 		{47BA8CD0-58CF-438F-B4B2-82C4B6FE8F2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47BA8CD0-58CF-438F-B4B2-82C4B6FE8F2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47BA8CD0-58CF-438F-B4B2-82C4B6FE8F2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0A703E0-F465-4515-84A7-34243A9B9E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0A703E0-F465-4515-84A7-34243A9B9E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0A703E0-F465-4515-84A7-34243A9B9E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0A703E0-F465-4515-84A7-34243A9B9E2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,11 +155,14 @@ Global
 		{EEF3F5F6-2C0D-471D-A4A7-0A3A5DFB389F} = {F6621FDD-8864-4B65-BEE7-E7B8BC5D6F82}
 		{A5F556BF-AE9E-4E5A-B31E-86EACAD19F01} = {F6621FDD-8864-4B65-BEE7-E7B8BC5D6F82}
 		{65C8DBBD-4681-4BC7-BC23-C0F7E016F912} = {F6621FDD-8864-4B65-BEE7-E7B8BC5D6F82}
-		{C400A8DE-CC95-4550-BAD9-C1DD052B0470} = {26CAD330-C3B8-4DB2-9167-38E5DF9B4152}
-		{8136A125-1619-4D7F-86F7-21AE082E1DF4} = {C400A8DE-CC95-4550-BAD9-C1DD052B0470}
 		{9C4B969B-1776-44F9-8089-3C250E58AF96} = {C400A8DE-CC95-4550-BAD9-C1DD052B0470}
+		{8136A125-1619-4D7F-86F7-21AE082E1DF4} = {C400A8DE-CC95-4550-BAD9-C1DD052B0470}
 		{3694268E-A765-4CF6-BE7D-BD74D1747856} = {C400A8DE-CC95-4550-BAD9-C1DD052B0470}
+		{C400A8DE-CC95-4550-BAD9-C1DD052B0470} = {26CAD330-C3B8-4DB2-9167-38E5DF9B4152}
 		{E8092DCE-DC65-44F6-84B3-6DB1F35840F8} = {F6621FDD-8864-4B65-BEE7-E7B8BC5D6F82}
 		{47BA8CD0-58CF-438F-B4B2-82C4B6FE8F2C} = {170EF38C-8498-4CA3-9A2B-15C6E53B4AB5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4645A870-9ABE-4EA4-8668-F182772274C9}
 	EndGlobalSection
 EndGlobal

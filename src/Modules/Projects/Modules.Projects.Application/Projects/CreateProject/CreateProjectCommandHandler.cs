@@ -1,6 +1,4 @@
-﻿using Refit;
-
-namespace Modules.Projects.Application.Projects.CreateProject;
+﻿namespace Modules.Projects.Application.Projects.CreateProject;
 
 internal sealed class CreateProjectCommandHandler(
         IProjectsClient client)
@@ -19,41 +17,27 @@ internal sealed class CreateProjectCommandHandler(
             return Result.Failure<Created>(errors);
         }
 
-        var projectResponse = result.Value;
+        var projectId = result.Value;
 
-        if (string.IsNullOrWhiteSpace(projectResponse))
+        if (string.IsNullOrWhiteSpace(projectId))
         {
             return Result.Failure<Created>(GeneralErrors.UnhandledRequest);
         }
 
-        var deliverableTasks = request
-            .Deliverables
-            .Select(x =>
-            {
-                var deliverableRequest = CreateProjectCommand.ToDeliverableRequest(x);
-
-                var file = x.File;
-
-                using var fileStream = file.OpenReadStream();
-
-                var streamPart = new StreamPart(fileStream, file.Name, file.ContentType);
-
-                return client.CreateDeliverablesAsync(projectResponse, deliverableRequest, streamPart);
-            });
-
-        var deliverableResults = await Task
-            .WhenAll(deliverableTasks)
-            .ConfigureAwait(false);
-
-        if (deliverableResults.Any(x => !x.IsSuccess()))
+        foreach (var deliverable in request.Deliverables)
         {
-            var errors = deliverableResults
-                .SelectMany(x => x.MapErrors())
-                .ToArray();
+            var deliverableRequest = CreateProjectCommand.ToDeliverableRequest(deliverable);
 
-            return Result.Failure<Created>(errors);
+            var deliverableResult = await client.CreateDeliverablesAsync(
+                    projectId,
+                    deliverableRequest)
+                .ConfigureAwait(false);
+
+            if (!deliverableResult.IsSuccess())
+            {
+                continue;
+            }
         }
-
 
         return Result.Success(Results.Created);
     }

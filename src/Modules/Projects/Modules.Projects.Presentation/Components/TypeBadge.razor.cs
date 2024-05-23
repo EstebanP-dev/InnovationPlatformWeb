@@ -1,6 +1,6 @@
 ﻿using Modules.Projects.Application.Enumerations;
 
-namespace Modules.Projects.Presentation.Projects.All.List.Table;
+namespace Modules.Projects.Presentation.Components;
 
 public sealed partial class TypeBadge
 {

@@ -1,41 +1,83 @@
 ﻿<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-    <div class="flow-root">
-        <h3 class="text-xl font-semibold dark:text-white">Entregables</h3>
-        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-            @if (Deliverables.Any())
-            {
-                @foreach (var item in Deliverables)
+    @if (FromCreate)
+    {
+        <div class="flex mb-6 items-center justify-center w-full">
+            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                    </svg>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">DOCX, or PDF (MAX. 4MB)</p>
+                </div>
+                <InputFile id="dropzone-file"
+                           type="file"
+                           multiple
+                           class="rounded"
+                           OnChange="OnInputFileChanged"/>
+            </label>
+        </div>
+    }
+    else
+    {
+        <div class="flow-root">
+            <h3 class="text-xl font-semibold dark:text-white">Entregables</h3>
+            <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                @if (Deliverables.Any())
                 {
-                    <li class="py-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="flex-shrink-0">
-                                <span class="text-xl dark:text-white mdi mdi-note"></span>
+                    @foreach (var item in Deliverables)
+                    {
+                        <li class="py-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-shrink-0">
+                                    <span class="text-xl dark:text-white mdi mdi-note"></span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-base font-semibold text-gray-900 truncate dark:text-white">
+                                        @item.Name
+                                    </p>
+                                    @* <p class="text-sm font-normal text-gray-500 truncate dark:text-gray-400"> *@
+                                    @*     @item.Description *@
+                                    @* </p> *@
+                                </div>
+                                <div class="inline-flex items-center">
+                                    <AuthorizeView Roles="Admin,Assessor" Context="reviewDeliverable">
+                                        <Authorized>
+                                            <button @onclick="() => DownloadFile(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-blue text-center border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                Revisar
+                                            </button>
+                                            <button class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-white bg-blue-600 border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                Cancelar
+                                            </button>
+                                        </Authorized>
+                                        <NotAuthorized>
+                                            <StatusBadge Title="@item.Status.StringName" BackgroundColor="@item.Status.BackgroundColor" />
+                                        </NotAuthorized>
+                                    </AuthorizeView>
+                                    <AuthorizeView Roles="Admin">
+                                        <ChildContent Context="revokeDeliverable">
+                                            <button @onclick="() => RemoveItem(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-white bg-blue-600 border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                Revoke
+                                            </button>
+                                        </ChildContent>
+                                    </AuthorizeView>
+                                </div>
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-base font-semibold text-gray-900 truncate dark:text-white">
-                                    @item.Name
-                                </p>
-                                <p class="text-sm font-normal text-gray-500 truncate dark:text-gray-400">
-                                    @item.Description
-                                </p>
-                            </div>
-                            <div class="inline-flex items-center">
-                                <button @onclick="() => OpenDialog(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-blue text-center border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    Edit
-                                </button>
-                                <button @onclick="() => RemoveItem(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-white bg-blue-600 border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    Revoke
-                                </button>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    }
                 }
-            }
-            else
-            {
-                <p class="text-black dark:text-white text-lg">No hay información.</p>
-            }
-        </ul>
-        <button @onclick="() => OpenDialog()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Agregar otro</button>
-    </div>
+                else
+                {
+                    <p class="text-black dark:text-white text-lg">No hay información.</p>
+                }
+            </ul>
+            <AuthorizeView Roles="Admin">
+                <ChildContent Context="addNewDeliverable">
+                    <AuthorizeView>
+                        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Agregar otro</button>
+                    </AuthorizeView>
+                </ChildContent>
+            </AuthorizeView>
+        </div>
+    }
 </div>

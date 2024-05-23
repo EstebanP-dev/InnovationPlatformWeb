@@ -29,6 +29,9 @@ public sealed partial class MembersInformation
     [Parameter]
     public string? Title { get; set; }
 
+    [Parameter]
+    public bool FromCreate { get; set; } = true;
+
     [Inject]
     private ISender? Sender { get; init; }
 

@@ -2,6 +2,9 @@
 
 public sealed class GetProjectDeliverableResponse
 {
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
+
     [JsonPropertyName("url")]
     public Uri? Url { get; set; }
 
@@ -13,6 +16,9 @@ public sealed class GetProjectDeliverableResponse
 
     [JsonPropertyName("type")]
     public string? Type { get; set; }
+
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
 
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }

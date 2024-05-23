@@ -1,7 +1,10 @@
-﻿namespace Modules.Identity.Presentation.Authentication.LogIn;
+﻿using Common.Presentation.Mvvm;
+
+
+namespace Modules.Identity.Presentation.Authentication.LogIn;
 
 public sealed partial class LogInViewModel
-    : ObservableObject
+    : BaseViewModel
 {
     [ObservableProperty]
     private string _userName = string.Empty;

@@ -1,10 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using SharedKernel.Abstraction.IoC;
 using SharedKernel.Primitives;
 
 namespace Common.Presentation.Mvvm;
 
-public abstract partial class BaseViewModel : ObservableValidator
+public abstract partial class BaseViewModel
+    : ObservableValidator
 {
+    [ObservableProperty]
+    private bool _isBusy;
+
     [ObservableProperty]
     private ErrorsCollection _errorsCollection = [];
 

@@ -1,20 +1,51 @@
-﻿<SelectBox TValue="@string" @bind-Value="SelectedType" Name="project_types_selector" Label="Type" Title="Elige un tipo">
-    @if (_data.Any())
-    {
-        foreach(var item in _data)
-        {
-            if (item.Id == SelectedType)
+﻿<AuthorizeView Roles="Admin">
+    <Authorized>
+        <SelectBox TValue="@string" @bind-Value="SelectedType" Name="project_types_selector" Label="Type" Title="Elige un tipo">
+            @if (_data.Any())
             {
-                <option value="@item.Id" selected>@item.Name</option>
+                foreach(var item in _data)
+                {
+                    if ((item.Name ?? "").Equals(SelectedType, StringComparison.OrdinalIgnoreCase))
+                    {
+                        <option value="@item.Id" selected>@item.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
             }
             else
             {
-                <option value="@item.Id">@item.Name</option>
+                <option>No hay tipos disponibles. Agrega unos a la db o revisa el servicio.</option>
             }
-        }
-    }
-    else
-    {
-        <option>No information</option>
-    }
-</SelectBox>
+        </SelectBox>
+    </Authorized>
+    <NotAuthorized>
+        <SelectBox TValue="@string"
+                   @bind-Value="SelectedType"
+                   Name="project_types_selector"
+                   Label="Type"
+                   Title="Elige un tipo"
+                   Disabled="@(!FromCreate)">
+            @if (_data.Any())
+            {
+                foreach(var item in _data)
+                {
+                    if ((item.Name ?? "").Equals(SelectedType, StringComparison.OrdinalIgnoreCase))
+                    {
+                        <option value="@item.Id" selected>@item.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
+            }
+            else
+            {
+                <option>No hay tipos disponibles.</option>
+            }
+        </SelectBox>
+    </NotAuthorized>
+</AuthorizeView>

@@ -20,11 +20,6 @@ internal sealed class HeaderDelegatingHandler(
 
         var tenant = tenantSettings.Value.UsbTenant;
 
-        if (!string.IsNullOrWhiteSpace(tenant))
-        {
-            request.Headers.Add("tenant_id", tenant);
-        }
-
         if (!string.IsNullOrWhiteSpace(token))
         {
             request.Headers.Add("Authorization", $"Bearer {token}");
@@ -32,8 +27,14 @@ internal sealed class HeaderDelegatingHandler(
 
         if (!string.IsNullOrWhiteSpace(userId))
         {
-            request.Headers.Add("user_id", userId);
+            request.Headers.Add("X-User-Id", userId);
         }
+
+        if (!string.IsNullOrWhiteSpace(tenant))
+        {
+            request.Headers.Add("X-Tenant-Id", tenant);
+        }
+
 
         request.Headers.Add("Accept", "application/json");
 

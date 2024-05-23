@@ -9,6 +9,8 @@ public sealed partial class ProjectListComponent
     [Inject]
     public ISender? Sender { get; init; }
 
+    private string? SearchText { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync()

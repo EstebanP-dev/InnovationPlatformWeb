@@ -2,55 +2,69 @@
 using Common.Presentation.Files;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.AspNetCore.Components.Forms;
+using Modules.Projects.Application.Enumerations;
 using Modules.Projects.Application.Projects.CreateProject;
 using Modules.Projects.Application.Projects.GetProject;
+using SharedKernel.Primitives;
 
 namespace Modules.Projects.Presentation.Deliverables;
 
-public sealed class ProjectDeliverableViewModel : BaseViewModel
+public sealed class  ProjectDeliverableViewModel : BaseViewModel
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    
+    public string? Id { get; set; } = string.Empty;
+
     [Required]
     [StringLength(maximumLength: 255, MinimumLength = 5)]
     public string Name { get; set; } = string.Empty;
 
-    [StringLength(maximumLength: 1000, MinimumLength = 5)]
-    public string Description { get; set; } = string.Empty;
-
     [Required]
-    public IBrowserFile? File { get; set; }
+    public string? File { get; set; }
 
     [Required]
     public string Type { get; set; } = string.Empty;
 
-    internal static ProjectDeliverableViewModel FromGetProjectDeliverableResponse(GetProjectDeliverableResponse? response)
+    public required string ProjectId { get; set; }
+
+    [Required]
+    public DeliverableStatusEnumeration Status { get; set; } = DeliverableStatusEnumeration.Pending;
+
+    internal static ProjectDeliverableViewModel FromGetProjectDeliverableResponse(GetProjectDeliverableResponse? response, string projectId)
     {
         return new ProjectDeliverableViewModel
         {
-            Id = Guid.NewGuid(),
+            Id = response?.Id ?? "",
             Name = response?.Name ?? "",
-            Description = response?.Description ?? "",
-            Type = response?.Type ?? ""
+            Type = response?.Type ?? "",
+            Status = DeliverableStatusEnumeration.FromName(response?.Status ?? "") ?? DeliverableStatusEnumeration.Pending,
+            File = response?.Url?.ToString() ?? "",
+            ProjectId = projectId
         };
     }
 
-    internal static (CreateProjectDeliverableDto?, string) ToRequest(ProjectDeliverableViewModel viewModel)
+    internal static Result<CreateProjectDeliverableDto> ToRequest(ProjectDeliverableViewModel viewModel)
     {
-        if (viewModel.File is null)
+        if (string.IsNullOrWhiteSpace(viewModel.File))
         {
-            return (null, "El archivo es requerido.");
+            return Result.Failure<CreateProjectDeliverableDto>(Error.Validation("No se encontraron archivos adjuntos."));
+        }
+
+        if (string.IsNullOrWhiteSpace(viewModel.Type))
+        {
+            return Result.Failure<CreateProjectDeliverableDto>(Error.Validation("No se encontró el tipo de entregable."));
+        }
+
+        if (string.IsNullOrWhiteSpace(viewModel.Name))
+        {
+            return Result.Failure<CreateProjectDeliverableDto>(Error.Validation("No se encontró el nombre del entregable."));
         }
 
         var response = new CreateProjectDeliverableDto(
-            Guid.NewGuid(),
-            viewModel.File.Name,
-            viewModel.File.ContentType,
             viewModel.Type,
+            viewModel.Status.Name,
             viewModel.Name,
-            new FileProvider(viewModel.File),
-            viewModel.Description);
+            viewModel.File,
+            "");
 
-        return (response, "");
+        return Result.Success(response);
     }
 }

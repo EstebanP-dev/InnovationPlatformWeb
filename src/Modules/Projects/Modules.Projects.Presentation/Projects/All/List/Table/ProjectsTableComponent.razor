@@ -34,41 +34,22 @@
                             </div>
                         </TableCell>
                         <TableCell>
-                            <StatusBadge Status="item.Status" />
+                            <StatusBadge Title="@item.Status?.Name" BackgroundColor="@item.Status?.BackgroundColor" />
                         </TableCell>
                         <TableCell>
                             <TypeBadge Type="item.Type" />
                         </TableCell>
                         <TableCell>
                             <div class="flex">
-                                <div
-                                    class="w-7 h-7 rounded-full text-white flex items-center justify-center text-sm mr-1 bg-yellow-600">
-                                    <div class="px-4">
-                                        <div class="group inline-flex items-center outline-none">
-                                            <span>JN</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <MemberIcon Name="@item.Assessor.FullName" />
                             </div>
                         </TableCell>
                         <TableCell>
                             <div class="flex">
-                                <div
-                                    class="w-7 h-7 rounded-full text-white flex items-center justify-center text-sm mr-1 bg-yellow-600">
-                                    <div class="px-4">
-                                        <div class="group inline-flex items-center outline-none">
-                                            <span>JN</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="w-7 h-7 rounded-full text-white flex items-center justify-center text-sm mr-1 bg-yellow-600">
-                                    <div class="px-4">
-                                        <div class="group inline-flex items-center outline-none">
-                                            <span>EP</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                @foreach (var author in item.Authors)
+                                {
+                                    <MemberIcon Name="@author.FullName" />
+                                }
                             </div>
                         </TableCell>
                         <TableCell ShowOnMobile="false">

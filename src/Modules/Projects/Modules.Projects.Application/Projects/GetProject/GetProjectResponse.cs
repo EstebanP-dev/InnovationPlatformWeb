@@ -18,6 +18,9 @@ public sealed class GetProjectResponse
     [JsonPropertyName("type")]
     public string? Type { get; set; }
 
+    [JsonPropertyName("deliverable_folder")]
+    public string? DeliverableFolder { get; set; }
+
     [JsonPropertyName("assessor")]
 
     public GetProjectMemberResponse? Assessor { get; set; }

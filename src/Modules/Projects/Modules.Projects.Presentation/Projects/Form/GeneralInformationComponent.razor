@@ -12,7 +12,8 @@
             <TextArea Name="description" @bind-Value="Description" Placeholder="Descripción del proyecto" Label="Descripción"></TextArea>
         </div>
         <div class="sm:col-span-2">
-            <ProjectTypesComponent @bind-SelectedType="Type" />
+            <ProjectTypesComponent @bind-SelectedType="Type"
+                                   FromCreate="FromCreate"/>
         </div>
     </div>
 </article>

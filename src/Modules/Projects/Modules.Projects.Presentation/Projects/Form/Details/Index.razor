@@ -1,5 +1,4 @@
-﻿@layout ProjectLayout
-@page "/projects/{Id}"
+﻿@page "/projects/{Id}"
 
 @if (_isBusy)
 {
@@ -7,34 +6,41 @@
 }
 else
 {
-    <EditForm class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900" Model="_viewModel" FormName="create-project">
-        <div class="col-span-3 flex flex-col-reverse">
-            <button @onclick="() => HandleValidSubmit(true)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Modificar
-            </button>
-            <button @onclick="() => HandleValidSubmit(true)" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-red-800">
-                Eliminar
-            </button>
-        </div>
-        <div class="col-span-1 xl:col-auto">
-            <MembersInformation @bind-SelectedItems="_viewModel.Assessors"
-                                LoadAssessors="true"
-                                Title="Asesores"
-                                AddButtonTitle="Agregar un asesor"
-                                MaximumMembers="1" />
-            <MembersInformation @bind-SelectedItems="_viewModel.Authors"
-                                LoadAssessors="false"
-                                Title="Autores"
-                                AddButtonTitle="Agregar un author"
-                                MaximumMembers="2" />
-        </div>
-        <div class="col-span-2">
-            <GeneralInformationComponent @bind-Title="_viewModel.Title"
-                                         @bind-Description="_viewModel.Description"
-                                         @bind-Type="_viewModel.Type" />
-        </div>
-        <div class="col-span-3">
-            <DeliverablesInformation @bind-Deliverables="_viewModel.Deliverables" />
-        </div>
-    </EditForm>
+    <div class="mb-4 col-span-full xl:mb-2">
+        <EditForm Context="detailsForm" class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900" Model="_viewModel" FormName="create-project">
+            <div class="col-span-3 flex flex-col-reverse gap-1">
+                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Modificar
+                </button>
+                <AuthorizeView Roles="Admin">
+                    <button @onclick="Delete" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-red-800">
+                        Eliminar
+                    </button>
+                </AuthorizeView>
+            </div>
+            <div class="col-span-1 xl:col-auto">
+                <MembersInformation @bind-SelectedItems="_viewModel.Assessors"
+                                    LoadAssessors="true"
+                                    Title="Asesores"
+                                    AddButtonTitle="Agregar un asesor"
+                                    MaximumMembers="1"
+                                    FromCreate="false"/>
+                <MembersInformation @bind-SelectedItems="_viewModel.Authors"
+                                    LoadAssessors="false"
+                                    Title="Autores"
+                                    AddButtonTitle="Agregar un author"
+                                    MaximumMembers="2"
+                                    FromCreate="false"/>
+            </div>
+            <div class="col-span-2">
+                <GeneralInformationComponent @bind-Title="_viewModel.Title"
+                                             @bind-Description="_viewModel.Description"
+                                             @bind-Type="_viewModel.Type"
+                                             FromCreate="false"/>
+            </div>
+            <div class="col-span-3">
+                <DeliverablesInformation @bind-Deliverables="_viewModel.Deliverables" FromCreate="false" />
+            </div>
+        </EditForm>
+    </div>
 }

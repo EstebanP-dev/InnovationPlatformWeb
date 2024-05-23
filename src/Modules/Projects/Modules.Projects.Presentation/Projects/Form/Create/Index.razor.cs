@@ -2,6 +2,7 @@
 
 public sealed partial class Index
 {
+    private readonly string _deliverableFolderIdentifier = Guid.NewGuid().ToString();
     private readonly Dispatcher _dispatcher = Dispatcher.CreateDefault();
     private readonly FormViewModel _viewModel = new();
     private bool _isBusy;
@@ -39,14 +40,16 @@ public sealed partial class Index
 
         _isBusy = true;
 
-        var request = FormViewModel.ToCreateRequest(_viewModel, out var message);
+        var requestResult = FormViewModel.ToCreateRequest(_viewModel, _deliverableFolderIdentifier);
 
-        if (request is null)
+        if (requestResult.IsFailure)
         {
-            Snackbar.Add(message, Severity.Error);
+            Snackbar.Add(requestResult.FirstError.Message, Severity.Error);
             _isBusy = false;
             return;
         }
+
+        var request = requestResult.Value;
 
         _dispatcher.InvokeAsync(async () =>
         {

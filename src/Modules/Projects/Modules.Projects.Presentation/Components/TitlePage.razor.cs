@@ -1,6 +1,4 @@
-﻿using Microsoft.JSInterop;
-
-namespace Modules.Projects.Presentation.Components;
+﻿namespace Modules.Projects.Presentation.Components;
 
 public sealed partial class TitlePage
 {

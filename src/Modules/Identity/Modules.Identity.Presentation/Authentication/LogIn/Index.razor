@@ -1,37 +1,43 @@
 ﻿@layout AuthenticationLayout
 @page "/login"
 
-
-<EditForm class="form-container w-full md:w-[400px] flex flex-col gap-y-8 bg-white px-10 pt-14 pb-14"
-          method="post"
-          Model="_credentials"
-          OnValidSubmit="OnValidSubmitAsync"
-          FormName="login">
-    <div>
-        <p class="text-blue-600 text-3xl font-bold text-center">Welcome back!</p>
-        <p class="text-center text-base text-gray-700">Keep all your credentials save.</p>
-    </div>
-    <div class="flex flex-col gap-y-5">
-        <TextBox CssClass="w-full rounded-full"
-                 Required="@true"
-                 Label="User Name"
-                 @bind-Value="_credentials.UserName"
-                 Placeholder="email@example.com"
-                 Type="text"
-                 Name="username"/>
-        <TextBox CssClass="w-full rounded-full"
-                 Required="@true"
-                 Label="Password"
-                 @bind-Value="_credentials.Password"
-                 Placeholder="Your Password"
-                 Type="password"
-                 Name="password"/>
-        <span class="text-sm text-gray-500 hover:text-blue-600 hover:underline cursor-pointer">
-            Forget Password?
-        </span>
-        <Button
-            Type="submit"
-            Label="Submit"
-            CssClass="w-full h-10 bg-blue-700 text-white rounded-full"></Button>
-    </div>
-</EditForm>
+@if (_viewModel.IsBusy)
+{
+    <Loading />
+}
+else
+{
+    <EditForm class="form-container w-full md:w-[400px] flex flex-col gap-y-8 bg-white px-10 pt-14 pb-14"
+              method="post"
+              Model="_viewModel"
+              OnValidSubmit="OnValidSubmit"
+              FormName="login">
+        <div>
+            <p class="text-blue-600 text-3xl font-bold text-center">Welcome back!</p>
+            <p class="text-center text-base text-gray-700">Keep all your credentials save.</p>
+        </div>
+        <div class="flex flex-col gap-y-5">
+            <TextBox CssClass="w-full rounded-full"
+                     Required="@true"
+                     Label="User Name"
+                     @bind-Value="_viewModel.UserName"
+                     Placeholder="email@example.com"
+                     Type="text"
+                     Name="username"/>
+            <TextBox CssClass="w-full rounded-full"
+                     Required="@true"
+                     Label="Password"
+                     @bind-Value="_viewModel.Password"
+                     Placeholder="Your Password"
+                     Type="password"
+                     Name="password"/>
+            <span class="text-sm text-gray-500 hover:text-blue-600 hover:underline cursor-pointer">
+                Forget Password?
+            </span>
+            <Button
+                Type="submit"
+                Label="Submit"
+                CssClass="w-full h-10 bg-blue-700 text-white rounded-full"></Button>
+        </div>
+    </EditForm>
+}

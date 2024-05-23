@@ -1,6 +1,7 @@
 ﻿using Common.Application.Responses;
 using Modules.Projects.Application.Assessors.GetAssessors;
 using Modules.Projects.Application.Authors.GetAuthors;
+using Modules.Projects.Application.Deliverables.ChangeStatus;
 using Modules.Projects.Application.DeliverableTypes.GetDeliverableTypes;
 using Modules.Projects.Application.Projects.CreateProject;
 using Modules.Projects.Application.Projects.GetProject;
@@ -25,6 +26,9 @@ public interface IProjectsClient
     [Delete("/{project_id}/")]
     Task<BaseResponse> DeleteProjectAsync([AliasAs("project_id")] string projectId);
 
+    [Delete("/{project_id}/force")]
+    Task<BaseResponse> DeleteForceProjectAsync([AliasAs("project_id")] string projectId);
+
     [Get("/assessors/")]
     Task<BaseResponse<IEnumerable<GetAssessorsResponse>>> GetAssessorsAsync();
 
@@ -40,7 +44,9 @@ public interface IProjectsClient
     [Post("/")]
     Task<BaseResponse<string>> CreateProjectAsync(CreateProjectRequest request);
 
-    [Multipart]
     [Post("/{project_id}/deliverables/")]
-    Task<BaseResponse> CreateDeliverablesAsync([AliasAs("project_id")] string projectId, [AliasAs("request")] CreateProjectDeliverableRequest request, [AliasAs("file")] StreamPart file);
+    Task<BaseResponse> CreateDeliverablesAsync([AliasAs("project_id")] string projectId, [Body] CreateProjectDeliverableRequest request);
+
+    [Post("/{project_id}/deliverables/{deliverable_id}/changeStatus")]
+    Task<BaseResponse> ChangeDeliverableStatusAsync([AliasAs("project_id")] string projectId, [AliasAs("deliverable_id")] string deliverableId, [Body] ChangeStatusRequest request);
 }

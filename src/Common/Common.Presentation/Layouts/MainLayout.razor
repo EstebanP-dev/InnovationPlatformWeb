@@ -1,0 +1,35 @@
+﻿@inherits LayoutComponentBase
+@using MudBlazor
+@using Common.Presentation.Scenes
+
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<div class="w-full h-screen flex flex-row">
+    <Sidebar>
+        <SidebarItem Icon="book-lock" Text="Projects" Route="projects" />
+    </Sidebar>
+    <div class="flex-1 overflow-y-auto">
+        <div class="p-4 2xl:px-10 ">
+            <div class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
+                <div class="mb-4 col-span-full xl:mb-2">
+                    <nav class="flex mb-5" aria-label="Breadcrumb">
+                        <ol class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
+                            @foreach (var segment in _urlSegments)
+                            {
+                                <li class="inline-flex items-center">
+                                    <a href="#" class="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white">
+                                        <svg class="w-5 h-5 mr-2.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                                        @segment
+                                    </a>
+                                </li>
+                            }
+                        </ol>
+                    </nav>
+                </div>
+                @Body
+            </div>
+        </div>
+    </div>
+</div>
