@@ -1,7 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Common.Presentation.Files;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.AspNetCore.Components.Forms;
 using Modules.Projects.Application.Enumerations;
 using Modules.Projects.Application.Projects.CreateProject;
 using Modules.Projects.Application.Projects.GetProject;
@@ -30,12 +27,16 @@ public sealed class  ProjectDeliverableViewModel : BaseViewModel
 
     internal static ProjectDeliverableViewModel FromGetProjectDeliverableResponse(GetProjectDeliverableResponse? response, string projectId)
     {
+        var status = DeliverableStatusEnumeration.FromName(response?.Status ?? "");
+
+        status ??= DeliverableStatusEnumeration.Pending;
+
         return new ProjectDeliverableViewModel
         {
             Id = response?.Id ?? "",
             Name = response?.Name ?? "",
             Type = response?.Type ?? "",
-            Status = DeliverableStatusEnumeration.FromName(response?.Status ?? "") ?? DeliverableStatusEnumeration.Pending,
+            Status = status,
             File = response?.Url?.ToString() ?? "",
             ProjectId = projectId
         };

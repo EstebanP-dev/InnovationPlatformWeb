@@ -1,5 +1,9 @@
-﻿using Modules.Projects.Application.Projects.DeleteProject;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Modules.Projects.Application.Enumerations;
+using Modules.Projects.Application.Projects.ChangeProjectStatus;
+using Modules.Projects.Application.Projects.DeleteProject;
 using Modules.Projects.Application.Projects.GetProject;
+using Modules.Projects.Presentation.Messages;
 
 namespace Modules.Projects.Presentation.Projects.Form.Details;
 
@@ -69,6 +73,47 @@ public sealed partial class Index
         });
     }
 
+    private void Modify()
+    {
+        ArgumentNullException.ThrowIfNull(Sender);
+        ArgumentNullException.ThrowIfNull(Snackbar);
+
+        if (_isBusy)
+        {
+            return;
+        }
+
+        var requestResult = FormViewModel.ToUpdateRequest(_viewModel);
+
+        if (requestResult.IsFailure)
+        {
+            Snackbar.Add(requestResult.FirstError.Message, Severity.Error);
+            return;
+        }
+
+        var request = requestResult.Value;
+
+        _isBusy = true;
+
+        _dispatcher.InvokeAsync(async () =>
+        {
+            var result = await Sender
+                .Send(request)
+                .ConfigureAwait(false);
+
+            _isBusy = false;
+            StateHasChanged();
+
+            if (result.IsFailure)
+            {
+                Snackbar.Add(result.FirstError.Message, Severity.Error);
+                return;
+            }
+
+            Snackbar.Add("Proyecto modificado correctamente.", Severity.Success);
+        });
+    }
+
     private void Delete()
     {
         ArgumentNullException.ThrowIfNull(NavigationManager);
@@ -99,5 +144,81 @@ public sealed partial class Index
             Snackbar.Add("Proyecto eliminado correctamente.", Severity.Success);
             NavigationManager.NavigateTo("/projects");
         });
+    }
+
+    private void ApproveProject()
+    {
+        ArgumentNullException.ThrowIfNull(Snackbar);
+
+        if (!_viewModel.IsValid())
+        {
+            Snackbar.Add(_viewModel.FirstError.Message, Severity.Error);
+            return;
+        }
+
+        if (!_viewModel.Deliverables.All(x => x.Status.Equals(DeliverableStatusEnumeration.Approved)))
+        {
+            Snackbar.Add("No se pueden aprobar proyectos con entregables pendientes.", Severity.Error);
+            return;
+        }
+
+        ChangeStatus(ProjectStatusEnumeration.Completed);
+    }
+
+    private void RejectProject()
+    {
+        ArgumentNullException.ThrowIfNull(Snackbar);
+
+        if (!_viewModel.IsValid())
+        {
+            Snackbar.Add(_viewModel.FirstError.Message, Severity.Error);
+            return;
+        }
+
+        var status = ProjectStatusEnumeration.Waiting;
+
+        WeakReferenceMessenger.Default.Send(new StatusChanged(status));
+
+        ChangeStatus(status);
+    }
+
+    private void ChangeStatus(ProjectStatusEnumeration status)
+    {
+        ArgumentNullException.ThrowIfNull(Sender);
+        ArgumentNullException.ThrowIfNull(Snackbar);
+
+        if (string.IsNullOrWhiteSpace(_viewModel.Id))
+        {
+            Snackbar.Add("No se ha encontrado el proyecto.", Severity.Error);
+            return;
+        }
+
+        InvokeAsync(async () =>
+        {
+            var result = await Sender
+                .Send(new ChangeProjectStatusCommand(_viewModel.Id, status.Name))
+                .ConfigureAwait(false);
+
+            if (result.IsFailure)
+            {
+                Snackbar.Add(result.FirstError.Message, Severity.Error);
+                return;
+            }
+
+            _viewModel.Status = status;
+
+            Snackbar.Add("Estado del proyecto modificado correctamente.", Severity.Success);
+            StateHasChanged();
+        });
+    }
+
+    private void OnDeliverableStartReview(DeliverableStatusEnumeration deliverableStatus)
+    {
+        if (!_viewModel.Status.Equals(ProjectStatusEnumeration.Pending))
+        {
+            return;
+        }
+
+        ChangeStatus(ProjectStatusEnumeration.InProgress);
     }
 }

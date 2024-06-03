@@ -1,13 +1,12 @@
-﻿using Modules.Projects.Presentation.Deliverables;
+﻿using Modules.Projects.Application.Enumerations;
 
 namespace Modules.Projects.Presentation.ProjectMembers;
 
 public sealed partial class MemberAutocomplete
 {
     private readonly Dispatcher _dispatcher = Dispatcher.CreateDefault();
-
     [Inject]
-    public IDialogService? DialogService { get; init; }
+    private IDialogService? DialogService { get; init; }
 
     [Parameter]
     public int MaximumMembers { get; set; }
@@ -28,6 +27,9 @@ public sealed partial class MemberAutocomplete
 
     [Parameter]
     public bool FromCreate { get; set; } = true;
+
+    [Parameter]
+    public bool ReadOnly { get; set; }
 
     private bool IsAddButtonDisabled => !FromCreate || SelectedItems.ToArray().Length == MaximumMembers;
 

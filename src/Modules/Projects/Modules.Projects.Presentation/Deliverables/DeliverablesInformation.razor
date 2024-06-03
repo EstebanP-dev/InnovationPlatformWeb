@@ -1,4 +1,10 @@
-﻿<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+﻿@using Modules.Projects.Application.Enumerations
+@{
+    var readOnly = Status.Equals(ProjectStatusEnumeration.Completed)
+                   || Status.Equals(ProjectStatusEnumeration.Waiting);
+}
+
+<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
     @if (FromCreate)
     {
         <div class="flex mb-6 items-center justify-center w-full">
@@ -14,7 +20,8 @@
                            type="file"
                            multiple
                            class="rounded"
-                           OnChange="OnInputFileChanged"/>
+                           OnChange="OnInputFileChanged"
+                           accept="@(string.Join(',', _allowedExtensions))"/>
             </label>
         </div>
     }
@@ -40,15 +47,31 @@
                                     @*     @item.Description *@
                                     @* </p> *@
                                 </div>
-                                <div class="inline-flex items-center">
+                                <div class="inline-flex items-center gap-2 align-center">
                                     <AuthorizeView Roles="Admin,Assessor" Context="reviewDeliverable">
                                         <Authorized>
-                                            <button @onclick="() => DownloadFile(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-blue text-center border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                Revisar
-                                            </button>
-                                            <button class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-white bg-blue-600 border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                Cancelar
-                                            </button>
+                                            @if(item.Status.Equals(DeliverableStatusEnumeration.Reviewing))
+                                            {
+                                                <button @onclick="() => DownloadFile(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-blue text-center border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                    <span>Volver a descargar</span>
+                                                </button>
+                                                <button @onclick="() => ApprovedDeliverable(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-white bg-blue-600 border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                    Aprobar
+                                                </button>
+                                                <button @onclick="() => RejectedDeliverable(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-blue text-center border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                    <span>Rechazar</span>
+                                                </button>
+                                            }
+                                            else if (item.Status.Equals(DeliverableStatusEnumeration.Pending))
+                                            {
+                                                <button @onclick="() => DownloadFile(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-blue text-center border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                    <span>Revisar</span>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <StatusBadge Title="@item.Status.StringName" BackgroundColor="@item.Status.BackgroundColor" />
+                                            }
                                         </Authorized>
                                         <NotAuthorized>
                                             <StatusBadge Title="@item.Status.StringName" BackgroundColor="@item.Status.BackgroundColor" />
@@ -56,9 +79,12 @@
                                     </AuthorizeView>
                                     <AuthorizeView Roles="Admin">
                                         <ChildContent Context="revokeDeliverable">
-                                            <button @onclick="() => RemoveItem(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-white bg-blue-600 border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                Revoke
-                                            </button>
+                                            @if (!readOnly)
+                                            {
+                                                <button @onclick="() => RemoveItem(item)" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-white bg-blue-600 border border-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                    Revoke
+                                                </button>
+                                            }
                                         </ChildContent>
                                     </AuthorizeView>
                                 </div>
@@ -74,7 +100,12 @@
             <AuthorizeView Roles="Admin">
                 <ChildContent Context="addNewDeliverable">
                     <AuthorizeView>
-                        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Agregar otro</button>
+                        @if (!readOnly)
+                        {
+                            <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Agregar otro
+                            </button>
+                        }
                     </AuthorizeView>
                 </ChildContent>
             </AuthorizeView>

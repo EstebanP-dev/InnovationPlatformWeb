@@ -33,6 +33,9 @@ public sealed partial class ProjectTypesComponent
     [Parameter]
     public bool FromCreate { get; set; }
 
+    [Parameter]
+    public bool Completed { get; set; }
+
     [Inject]
     private ISender? Sender { get; init; }
 

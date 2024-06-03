@@ -5,7 +5,14 @@ namespace Common.Presentation.Mvvm;
 public abstract class ExtendedObservableCollection<T>()
     : ObservableCollection<T>()
 {
-    public virtual void AddRange(IEnumerable<T>? collection)
+    public void AddAndClear(T item)
+    {
+        Clear();
+
+        Add(item);
+    }
+
+    public void AddRange(IEnumerable<T>? collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
 
@@ -19,8 +26,7 @@ public abstract class ExtendedObservableCollection<T>()
     {
         ArgumentNullException.ThrowIfNull(collection);
 
-        Clear();
-
+        ClearItems();
         AddRange(collection);
     }
 }

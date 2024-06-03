@@ -1,52 +1,57 @@
-﻿<ul class="mb-6 divide-y divide-gray-200 dark:divide-gray-700">
+﻿
+<ul class="mb-6 divide-y divide-gray-200 dark:divide-gray-700">
     @foreach (var member in SelectedItems)
     {
         <li class="py-4">
             <div class="flex justify-between xl:block 2xl:flex align-center 2xl:space-x-4">
-                <div class="flex space-x-4 xl:mb-4 2xl:mb-0">
-                    <div>
-                        <img class="w-6 h-6 rounded-full" src="@member.Avatar" alt="Bonnie image">
-                    </div>
+                <div class="flex align-center justify-items-center space-x-4 xl:mb-4 2xl:mb-0">
+                    <MemberIcon Name="@member.Name" />
                     <div class="flex-1 min-w-0">
                         <p class="text-base font-semibold text-gray-900 leading-none truncate mb-0.5 dark:text-white">
                             @member.Name
                         </p>
                     </div>
                 </div>
-                <div class="inline-flex items-center w-auto xl:w-full 2xl:w-auto">
-                    <AuthorizeView Roles="Admin" Context="deleteMember">
-                        <Authorized>
-                            <button @onclick="() => RemoveItem(member)" class="w-full px-3 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-red-300 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                Eliminar
-                            </button>
-                        </Authorized>
-                        <NotAuthorized>
-                            @if (FromCreate)
-                            {
+                @if (member.CanRemoveItem && !ReadOnly)
+                {
+                    <div class="inline-flex items-center w-auto xl:w-full 2xl:w-auto">
+                        <AuthorizeView Roles="Admin" Context="deleteMember">
+                            <Authorized>
                                 <button @onclick="() => RemoveItem(member)" class="w-full px-3 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-red-300 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                     Eliminar
                                 </button>
-                            }
-                        </NotAuthorized>
-                    </AuthorizeView>
-                </div>
+                            </Authorized>
+                            <NotAuthorized>
+                                @if (FromCreate)
+                                {
+                                    <button @onclick="() => RemoveItem(member)" class="w-full px-3 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-red-300 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                        Eliminar
+                                    </button>
+                                }
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </div>
+                }
             </div>
         </li>
     }
 </ul>
 
-<AuthorizeView Roles="Admin" Context="addNewMember">
-    <Authorized>
-        <button @onclick="OpenDialog" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-blue-800">
-            @AddButtonTitle
-        </button>
-    </Authorized>
-    <NotAuthorized>
-        @if (!IsAddButtonDisabled)
-        {
+@if (!ReadOnly)
+{
+    <AuthorizeView Roles="Admin" Context="addNewMember">
+        <Authorized>
             <button @onclick="OpenDialog" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-blue-800">
                 @AddButtonTitle
             </button>
-        }
-    </NotAuthorized>
-</AuthorizeView>
+        </Authorized>
+        <NotAuthorized>
+            @if (!IsAddButtonDisabled)
+            {
+                <button @onclick="OpenDialog" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-blue-800">
+                    @AddButtonTitle
+                </button>
+            }
+        </NotAuthorized>
+    </AuthorizeView>
+}

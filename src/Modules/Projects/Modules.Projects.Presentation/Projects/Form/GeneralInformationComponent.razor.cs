@@ -1,4 +1,6 @@
-﻿namespace Modules.Projects.Presentation.Projects.Form;
+﻿using Modules.Projects.Application.Enumerations;
+
+namespace Modules.Projects.Presentation.Projects.Form;
 
 public sealed partial class GeneralInformationComponent
 {
@@ -70,6 +72,9 @@ public sealed partial class GeneralInformationComponent
 
     [Parameter]
     public bool FromCreate { get; set; } = true;
+
+    [Parameter]
+    public ProjectStatusEnumeration Status { get; set; } = ProjectStatusEnumeration.Pending;
 
     [Parameter]
     public EventCallback<string> TypeChanged { get; set; }

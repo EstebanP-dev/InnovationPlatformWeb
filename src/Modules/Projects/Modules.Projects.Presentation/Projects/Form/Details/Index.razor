@@ -1,4 +1,9 @@
 ﻿@page "/projects/{Id}"
+@using Modules.Projects.Application.Enumerations
+
+@{
+    var status = _viewModel.Status;
+}
 
 @if (_isBusy)
 {
@@ -8,14 +13,49 @@ else
 {
     <div class="mb-4 col-span-full xl:mb-2">
         <EditForm Context="detailsForm" class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900" Model="_viewModel" FormName="create-project">
-            <div class="col-span-3 flex flex-col-reverse gap-1">
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Modificar
-                </button>
-                <AuthorizeView Roles="Admin">
-                    <button @onclick="Delete" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-red-800">
-                        Eliminar
+            @if (status.Equals(ProjectStatusEnumeration.Waiting))
+            {
+                <div class="col-span-3">
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">¡Atención!</strong>
+                        <span class="block sm:inline">Este proyecto ha sido rechazado.</span>
+                    </div>
+                </div>
+            }
+            else if (status.Equals(ProjectStatusEnumeration.InProgress))
+            {
+                <div class="col-span-3 flex flex-col-reverse gap-1">
+                    <button @onclick="Modify" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Modificar
                     </button>
+                    <AuthorizeView Roles="Admin">
+                        <Authorized>
+                            <button @onclick="Delete" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-red-800">
+                                Eliminar
+                            </button>
+                        </Authorized>
+                    </AuthorizeView>
+                </div>
+            }
+            <div class="col-span-1 flex align-center gap-2 xl:col-auto">
+                <span>
+                    Estado del proyecto:
+                </span>
+                <StatusBadge Title="@(status.Name)" BackgroundColor="@(status.BackgroundColor)"/>
+            </div>
+            <div class="col-span-2 flex flex-row justify-end gap-2">
+                <AuthorizeView Roles="Admin,Assessor" Context="reviewStateManager">
+                    <Authorized>
+                        @if (status.Equals(ProjectStatusEnumeration.InProgress))
+                        {
+                            <button @onclick="ApproveProject" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Aprobar
+                            </button>
+                            <button @onclick="RejectProject" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                Rechazar
+                            </button>
+                        }
+                    </Authorized>
                 </AuthorizeView>
             </div>
             <div class="col-span-1 xl:col-auto">
@@ -24,22 +64,28 @@ else
                                     Title="Asesores"
                                     AddButtonTitle="Agregar un asesor"
                                     MaximumMembers="1"
-                                    FromCreate="false"/>
+                                    FromCreate="false"
+                                    Status="status"/>
                 <MembersInformation @bind-SelectedItems="_viewModel.Authors"
                                     LoadAssessors="false"
                                     Title="Autores"
                                     AddButtonTitle="Agregar un author"
                                     MaximumMembers="2"
-                                    FromCreate="false"/>
+                                    FromCreate="false"
+                                    Status="status"/>
             </div>
             <div class="col-span-2">
                 <GeneralInformationComponent @bind-Title="_viewModel.Title"
                                              @bind-Description="_viewModel.Description"
                                              @bind-Type="_viewModel.Type"
-                                             FromCreate="false"/>
+                                             FromCreate="false"
+                                             Status="status"/>
             </div>
             <div class="col-span-3">
-                <DeliverablesInformation @bind-Deliverables="_viewModel.Deliverables" FromCreate="false" />
+                <DeliverablesInformation @bind-Deliverables="_viewModel.Deliverables"
+                                         FromCreate="false"
+                                         OnDerivebleStatusChanged="OnDeliverableStartReview"
+                                         Status="status"/>
             </div>
         </EditForm>
     </div>

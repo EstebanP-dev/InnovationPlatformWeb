@@ -1,4 +1,10 @@
-﻿
+﻿@using Modules.Projects.Application.Enumerations
+@{
+    var readOnly = Status.Equals(ProjectStatusEnumeration.Completed)
+                   || Status.Equals(ProjectStatusEnumeration.Waiting);
+}
+
+
 <article class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
     <h3 class="mb-4 text-xl font-semibold dark:text-white">General information</h3>
     <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
@@ -6,14 +12,16 @@
             <TextInput Name="title"
                        @bind-Value="Title"
                        Placeholder="Título del proyecto"
+                       ReadOnly="readOnly"
                        Label="Título" />
         </div>
         <div class="sm:col-span-2">
-            <TextArea Name="description" @bind-Value="Description" Placeholder="Descripción del proyecto" Label="Descripción"></TextArea>
+            <TextArea Name="description" @bind-Value="Description" Placeholder="Descripción del proyecto" Label="Descripción" ReadOnly="readOnly"></TextArea>
         </div>
         <div class="sm:col-span-2">
             <ProjectTypesComponent @bind-SelectedType="Type"
-                                   FromCreate="FromCreate"/>
+                                   FromCreate="FromCreate"
+                                   Completed="readOnly"/>
         </div>
     </div>
 </article>

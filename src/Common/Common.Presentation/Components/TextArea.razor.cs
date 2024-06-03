@@ -15,6 +15,9 @@ public sealed partial class TextArea
     public bool Required { get; set; }
 
     [Parameter]
+    public bool ReadOnly { get; set; }
+
+    [Parameter]
     public string? Value { get; set; }
 
     [Parameter]

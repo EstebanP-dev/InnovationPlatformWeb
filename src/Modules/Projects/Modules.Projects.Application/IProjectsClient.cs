@@ -7,6 +7,7 @@ using Modules.Projects.Application.Projects.CreateProject;
 using Modules.Projects.Application.Projects.GetProject;
 using Modules.Projects.Application.Projects.GetProjects;
 using Modules.Projects.Application.Projects.GetTotalStatusCountByUser;
+using Modules.Projects.Application.Projects.UpdateProject;
 using Modules.Projects.Application.Types.GetProjectTypes;
 using Refit;
 
@@ -43,6 +44,9 @@ public interface IProjectsClient
 
     [Post("/")]
     Task<BaseResponse<string>> CreateProjectAsync(CreateProjectRequest request);
+
+    [Put("/{project_id}/")]
+    Task<BaseResponse> UpdateProjectAsync([AliasAs("project_id")] string projectId, [Body] UpdateProjectRequest request);
 
     [Post("/{project_id}/deliverables/")]
     Task<BaseResponse> CreateDeliverablesAsync([AliasAs("project_id")] string projectId, [Body] CreateProjectDeliverableRequest request);

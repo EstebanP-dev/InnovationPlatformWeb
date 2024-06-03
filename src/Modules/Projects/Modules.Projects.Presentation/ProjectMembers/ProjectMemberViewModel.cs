@@ -14,6 +14,8 @@ public sealed class ProjectMemberViewModel : BaseViewModel
 
     public string Name { get; set; } = string.Empty;
 
+    public bool CanRemoveItem { get; set; } = true;
+
 
     private static ProjectMemberViewModel FromAssessorsResponse(GetAssessorsResponse? response)
     {

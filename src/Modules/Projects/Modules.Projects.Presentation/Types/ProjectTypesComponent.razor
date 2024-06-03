@@ -1,6 +1,6 @@
 ﻿<AuthorizeView Roles="Admin">
     <Authorized>
-        <SelectBox TValue="@string" @bind-Value="SelectedType" Name="project_types_selector" Label="Type" Title="Elige un tipo">
+        <SelectBox TValue="@string" @bind-Value="SelectedType" Name="project_types_selector" Label="Type" Title="Elige un tipo" Disabled="Completed">
             @if (_data.Any())
             {
                 foreach(var item in _data)

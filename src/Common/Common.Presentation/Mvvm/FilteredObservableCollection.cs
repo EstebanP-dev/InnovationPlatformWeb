@@ -16,7 +16,7 @@ public abstract class FilteredObservableCollection<T>(
         base.AddRangeAndClear(collection);
     }
 
-    public virtual void FilteredFromText(string text)
+    public void FilteredFromText(string text)
     {
         if (!_isAlreadyFiltered)
         {

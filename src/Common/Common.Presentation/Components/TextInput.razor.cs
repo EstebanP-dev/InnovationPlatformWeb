@@ -18,6 +18,9 @@ public sealed partial class TextInput
     public string? Value { get; set; }
 
     [Parameter]
+    public bool ReadOnly { get; set; }
+
+    [Parameter]
     public EventCallback<string?> ValueChanged { get; set; }
 
     private void OnValueChanged(ChangeEventArgs e)

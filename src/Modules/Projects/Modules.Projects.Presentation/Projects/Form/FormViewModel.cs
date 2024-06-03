@@ -2,6 +2,7 @@
 using Modules.Projects.Application.Enumerations;
 using Modules.Projects.Application.Projects.CreateProject;
 using Modules.Projects.Application.Projects.GetProject;
+using Modules.Projects.Application.Projects.UpdateProject;
 using Modules.Projects.Presentation.Deliverables;
 using Modules.Projects.Presentation.ProjectMembers;
 using SharedKernel.Primitives;
@@ -21,6 +22,9 @@ public sealed class FormViewModel : BaseViewModel
 
     [Required]
     public string Type { get; set; } = string.Empty;
+
+    [Required]
+    public ProjectStatusEnumeration Status { get; set; } = ProjectStatusEnumeration.Pending;
 
 #pragma warning disable CA2227
     public ProjectMembersCollection Assessors { get; set; } = [];
@@ -53,9 +57,13 @@ public sealed class FormViewModel : BaseViewModel
         ArgumentNullException.ThrowIfNull(response);
         ArgumentNullException.ThrowIfNull(response.Id);
 
+        var status = ProjectStatusEnumeration.FromName(response.Status);
+        status ??= ProjectStatusEnumeration.Pending;
+
         var viewModel = new FormViewModel
         {
             Id = response.Id,
+            Status = status,
             Title = response.Title ?? "",
             Description = response.Description ?? "",
             Type = response.Type ?? "",
@@ -86,17 +94,17 @@ public sealed class FormViewModel : BaseViewModel
 
         if (!viewModel.Assessors.Any())
         {
-            return Result.Failure<CreateProjectCommand>(Error.Validation("Al menos un asesor debe ser seleccionado."));
+            return Result.Failure<CreateProjectCommand>(Error.Validation(message: "Al menos un asesor debe ser seleccionado."));
         }
 
         if (!viewModel.Authors.Any())
         {
-            return Result.Failure<CreateProjectCommand>(Error.Validation("Al menos un autor debe ser seleccionado."));
+            return Result.Failure<CreateProjectCommand>(Error.Validation(message:"Al menos un autor debe ser seleccionado."));
         }
 
         if (!viewModel.Deliverables.Any())
         {
-            return Result.Failure<CreateProjectCommand>(Error.Validation("Al menos un entregable debe ser seleccionado."));
+            return Result.Failure<CreateProjectCommand>(Error.Validation(message: "Al menos un entregable debe ser seleccionado."));
         }
 
         var assesor = viewModel.Assessors.First();
@@ -128,5 +136,32 @@ public sealed class FormViewModel : BaseViewModel
             ProjectStatusEnumeration.Pending.Name);
 
         return request;
+    }
+
+    internal static Result<UpdateProjectCommand> ToUpdateRequest(FormViewModel? viewModel)
+    {
+        ArgumentNullException.ThrowIfNull(viewModel);
+
+        if (string.IsNullOrWhiteSpace(viewModel.Id))
+        {
+            return Result.Failure<UpdateProjectCommand>(Error.Validation(message: "No se encuentra el projecto seleccionado."));
+        }
+
+        if (string.IsNullOrWhiteSpace(viewModel.Title))
+        {
+            return Result.Failure<UpdateProjectCommand>(Error.Validation(message: "El título es requerido."));
+        }
+
+        if (string.IsNullOrWhiteSpace(viewModel.Description))
+        {
+            return Result.Failure<UpdateProjectCommand>(Error.Validation(message: "La descripción es requerida."));
+        }
+
+        var command = new UpdateProjectCommand(
+            viewModel.Id,
+            Title: viewModel.Title,
+            Description: viewModel.Description);
+
+        return command;
     }
 }

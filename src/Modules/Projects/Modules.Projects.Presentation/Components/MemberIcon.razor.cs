@@ -25,7 +25,7 @@ public sealed partial class MemberIcon
         return names.Length switch
         {
             1 => $"{names[0][0]}{names[0][1]}",
-            _ => $"{names[0][0]}{names[1][0]}."
+            _ => $"{names[0][0]}{names[1][0]}"
         };
     }
 }
