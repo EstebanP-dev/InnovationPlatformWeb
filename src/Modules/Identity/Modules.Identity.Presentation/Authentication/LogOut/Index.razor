@@ -1,0 +1,52 @@
+﻿@page "/logout"
+@using Modules.Identity.Application.Authentication.LogOut
+@using Microsoft.AspNetCore.Components.Routing
+
+@if (_isInvalid)
+{
+    <p>Algo ha salido mal. <NavLink href="/" class="text-blue-600 underline">Regresar al home</NavLink>.</p>
+}
+else
+{
+    <Loading />
+}
+
+
+@code {
+    private bool _isInvalid;
+
+    [Inject]
+    private ISender? Sender { get; init; }
+
+    [Inject]
+    private NavigationManager? NavigationManager { get; init; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        LogOut();
+    }
+
+    private void LogOut()
+    {
+        ArgumentNullException.ThrowIfNull(NavigationManager);
+        ArgumentNullException.ThrowIfNull(Sender);
+
+        InvokeAsync( async () =>
+        {
+            var result = await Sender
+                .Send(new LogOutCommand())
+                .ConfigureAwait(false);
+
+            if (result.IsFailure)
+            {
+                _isInvalid = true;
+                return;
+            }
+
+            NavigationManager.NavigateTo("/login", true);
+        });
+    }
+
+}
